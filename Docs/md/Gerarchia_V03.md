@@ -71,7 +71,7 @@ Le due classi base permettono la definizione di qualunque oggetto rappresentabil
 L'idea fondante consiste nel derivare da queste due classi qualora si volesse creare una nuova categoria di oggetti, oppure rafffinare le categorie gia' presenti implementando classi che sono figlie di EquipItem, Generic o MagicItem.
 
 
-![](/home/giacomo/Boostnote/img/Ger3.jpg)
+![](/home/giacomo/Boostnote/img/Ger3cor.jpg)
 
 ### Classe `Item`
 
