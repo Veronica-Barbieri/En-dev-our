@@ -4,6 +4,8 @@
 
 - [Convezioni](#Convezioni)
   * [Nomenclatura](#Nomenclatura)
+  * [Sintassi e highlight nei documenti](#Sintassi-e-highlight-nei-documenti)
+- [Cambiamenti rispetto alla versione precedente](#Cambiamenti-rispetto-alla-versione-precedente)
 - [Gerarchia di classi: visione d'insieme](#Gerarchia-di-classi-visione-dinsieme)
   * [Classe `Item`](#Classe-Item)
     + [Campi dati](#Campi-dati)
@@ -22,7 +24,7 @@
     + [Campi dati](#Campi-dati-4)
     + [Definizione dei campi dati](#Definizione-dei-campi-dati-4)
   * [Classe `Armor`](#Classe-Armor)
-  * [CLasse `Potions`](#CLasse-Potions)
+  * [Classe `Potions`](#Classe-Potions)
 
 <!-- tocstop -->
 
@@ -36,6 +38,23 @@ Possibili convenzioni di nomenclatura:
 - I nomi dei metodi in lingua inglese. Se il metodo e' composto da più termini il primo ha lettera minuscola, tutte le iniziali dei successivi hanno lettera maiuscola (es. setName);
 - Devono essere dichiarate le direttive d'uso che si vogliono usare per i metodi appartenenti a un namespace (es. se voglio non dover riscrivere std::endl ogni volta che lo utilizzo, devo notificare che viene dichiarata quella direttiva d'uso e in quale file);
 - TUTTI i nomi che vengono utilizzati devono essere quanto più concisi possibile, prendendo come lunghezza indicativa tra i 5 e i 7 caratteri (non tassativo ma utile)
+
+### Sintassi e highlight nei documenti
+
+- I nomi delle classi vengono evidenziate in modo da rendere chiaro che si parla di classi (es. `Item`).
+- Per ogni classe sono definiti Campi dati e il significato degli stessi
+- I campi dati delle classi sono presentati in forma tabulare
+- Le descrizioni per i campi dati sono presentate in forma tabulare espansa
+
+## Cambiamenti rispetto alla versione precedente
+
+Nella V02 della gerarchia c'erano alcuni problemi fondamentali di struttura e contenuto per i dati:
+ 1) Le classi `Armor` e le sottoclassi di `Weapon` contenevano una grande quantita' informazioni simili, portando a ripetizione del codice in fase di definizione. Per ovviare al problema, vengono disposte come figlie di un unica interfaccia che racchiude quelle caratteristiche comuni, delegando alle sottoclassi l'onere di implementare aspetti piu' specifici. Questo permette inoltre di unificare tutti quegli oggetti che sono utilizzati come armamentario/equipaggiamento sotto un unica interfaccia, alleggerendo la gerarchia.Questo cambiamento comporta una serie di vantaggi:  
+  - viene introdotta una distinzione tra oggetti *riproducibili* e *unici*. Per esemplificare: una spada lunga e' un arma generica, sia che essa     possieda proprieta' magiche sia che non ne possieda. Una spada che esiste     come oggetto unico e dotato di proprieta' uniche puo' essere introdotta       attraverso l'implementazione di una sottoclasse che ne incapsuli i comportamenti unici.
+  - nel caso si desideri introdurre una nuova tipologia di oggetti che ricadono nella categoria degli equipaggiamenti sara' sufficiente introdurre una nuova sottoclasse di `EquipItem` che ne incapsuli le caratteristiche.
+ 2) `Generic` (sottoclasse di `Item`), nella gerarchia precedente fungeva da interaccia per eventuali sottotipi di oggetto (tipi specializzati). A conti fatti pero' tutto quello che deve fare e' permettere la definizione di oggetti che non hanno proprieta' particolari al di fuori dell'essere esse stesse un oggetto. In questa iterazione non e' piu' interfaccia ma classe concreta che funge solo da implementazione elementare per la classe Item e che assolve al compito di permettere la definizione di oggetti "elementari", che non hanno alcuna proprieta' particolare (es. sasso, corda, torcia).
+ 3) Come conseguenza del punto precedente, diventava difficoltoso definire in che modo si differenziassero gli oggetti che possiedevano proprieta' magiche (e che quindi assumevano una rilevanza maggiore) da quelli che invece erano definiti senza quelle proprieta'. Per ovviare al problema viene introdotta la classe `Magic Item` che appunto si prende carico di definire le proprieta' generiche di un oggetto magico. 
+
 
 ---
 
@@ -85,7 +104,6 @@ Classe base virtuale pura che rappresenta le caratteristiche generiche di un ogg
 | value | int | 
 | weight | int |
 | material | string |
-| volume_units | int |
 
 #### Definizione dei campi dati
 
@@ -97,8 +115,6 @@ weight
 ~ Il peso dell'oggetto
 material
 ~ Il materiale di cui é composto l'oggetto
-volume_units
-~ Il volume dell' oggetto espresso in unita' proprie del gioco specifico
 
 ### Classe `Spell`
 
@@ -216,7 +232,7 @@ max_range
 
 Classe derivata da Item e Magic che rappresenta un armatura nella sua interezza. Si occupa solamente di definire i metodi che deriva dalle classi da cui deriva, senza aggiungere informazioni particolari.
 
-### CLasse `Potions`
+### Classe `Potions`
 
 Classe derivata da MagicItem e che definisce gli oggetti pozione. Si limita ad implementare i metodi che vengono forniti dalla classe MagicItem.
 
