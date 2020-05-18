@@ -10,6 +10,8 @@ private:
     std::string cod_fiscale;
     int last_month_worked_days;
     int last_month_worked_hours;
+    double last_month_base_salary;
+    double last_month_bonus_salary;
     double last_month_salary;
     int vac_acc;
 
@@ -32,10 +34,14 @@ public:
     int getLastMonthWorkedHours() const;
     void setLastMonthWorkedHours(const int&);
 
+    double getLastMonthBaseSalary() const;
+    void setLastMonthBaseSalary(const double&);
+
+    double getLastMonthBonusSalary() const;
+    void setLastMonthBonusSalary(const double&);
+
     double getLastMonthSalary() const;
     void setLastMonthSalary(const double&);
-
-    bool operator==(const worker&) const;
 
     int getVacAcc() const;
     void setVacAcc(const int&);
@@ -47,6 +53,9 @@ public:
     virtual double calcBonus() const =0; // calcola il bonus da applicare allo stipendio base
     virtual void updateVacAcc() =0; // aggiorna le ferie accumulate
     virtual double calcFullSal(const int&, const int&) =0; // calcola lo stipendio totale
+
+    bool operator!=(const worker&) const;
+    bool operator==(const worker&) const;
 };
 
 #endif // WORKER_H

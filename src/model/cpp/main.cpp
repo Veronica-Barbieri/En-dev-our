@@ -17,31 +17,71 @@ int main()
     worker* tony = new ftemployee("tony", "cartony", "TC1");
     worker* mona = new ptemployee("mona", "poltrona", "GP1");
 
-    double stipg = gino->calcFullSal(24, 216); // ha alvorato 25 giorni per 9 ore ciascun giorno lavorativo
-    int vacg = gino->getVacAcc();
+    gino->calcFullSal(24, 216); // ha alvorato 25 giorni per 9 ore ciascun giorno lavorativo
 
-    double stipt = tony->calcFullSal(20, 200);
-    int vact = tony->getVacAcc();
+    tony->calcFullSal(20, 200);
 
-    double stipm = mona->calcFullSal(20, 80);
-    int vacm = mona->getVacAcc();
+    mona->calcFullSal(20, 80);
 
-    cout << "Stipendio Gino: " << stipg << endl <<"Vacanze accumulate Gino: " << vacg << endl << endl;
-    cout << "Stipendio Tony: " << stipt << endl <<"Vacanze accumulate Tony: " << vact << endl << endl;
-    cout << "Stipendio Mona: " << stipm << endl <<"Vacanze accumulate Mona: " << vacm << endl << endl;
+    cout << "Test oggetti worker e derivati: " << endl << endl;
+    cout << "1)" << endl << "Nome: " << gino->getName() << endl;
+    cout << "Cognome: " << gino->getSname() << endl;
+    cout << "Codice Fiscale: " << gino->getCodFiscale() << endl;
+    cout << "Giorni lavorati: " << gino->getLastMonthWorkedDays() << endl;
+    cout << "Ore lavorate: " << gino->getLastMonthWorkedHours() << endl;
+    cout << "Stipendio base: " << gino->getLastMonthBaseSalary() << endl;
+    cout << "Bonus: " << gino->getLastMonthBonusSalary() << endl;
+    cout << "Stipendio totale: " << gino->getLastMonthSalary() << endl;
+    cout << "Giorni ferie accumualti: " << gino->getVacAcc() << endl << endl;
 
-    cout << "test operator == :" << endl << "1) Risultato atteso: NON PASSATO" << endl;
+    cout << "2)" << endl << "Nome: " << tony->getName() << endl;
+    cout << "Cognome: " << tony->getSname() << endl;
+    cout << "Codice Fiscale: " << tony->getCodFiscale() << endl;
+    cout << "Giorni lavorati: " << tony->getLastMonthWorkedDays() << endl;
+    cout << "Ore lavorate: " << tony->getLastMonthWorkedHours() << endl;
+    cout << "Stipendio base: " << tony->getLastMonthBaseSalary() << endl;
+    cout << "Bonus: " << tony->getLastMonthBonusSalary() << endl;
+    cout << "Stipendio totale: " << tony->getLastMonthSalary() << endl;
+    cout << "Giorni ferie accumualti: " << tony->getVacAcc() << endl << endl;
+
+    cout << "1)" << endl << "Nome: " << mona->getName() << endl;
+    cout << "Cognome: " << mona->getSname() << endl;
+    cout << "Codice Fiscale: " << mona->getCodFiscale() << endl;
+    cout << "Giorni lavorati: " << mona->getLastMonthWorkedDays() << endl;
+    cout << "Ore lavorate: " << mona->getLastMonthWorkedHours() << endl;
+    cout << "Stipendio base: " << mona->getLastMonthBaseSalary() << endl;
+    cout << "Bonus: " << mona->getLastMonthBonusSalary() << endl;
+    cout << "Stipendio totale: " << mona->getLastMonthSalary() << endl;
+    cout << "Giorni ferie accumualti: " << mona->getVacAcc() << endl << endl;
+
+
+    cout << "Test operator == :" << endl << "1) Risultato atteso: NON PASSATO" << endl;
     if(*gino == *tony){
-        cout << "Primo test ugualianza passato" << endl << endl;
+        cout << "Primo test ugualianza PASSATO" << endl << endl;
     } else {
-        cout << "Primo test ugualianza non passato" << endl << endl;
+        cout << "Primo test ugualianza NON PASSATO" << endl << endl;
     }
 
-    cout << "2) Risultato atteso:PASSATO" << endl;
+    cout << "2) Risultato atteso: PASSATO" << endl;
     if(*gino == *mona){
-        cout << "Secondo test ugualianza passato" << endl << endl;
+        cout << "Secondo test ugualianza PASSATO" << endl << endl;
     } else {
-        cout << "Secondo test ugualianza non passato" << endl << endl;
+        cout << "Secondo test ugualianza NON PASSATO" << endl << endl;
+    }
+
+
+    cout << "Test operator != :" << endl << "1) Risultato atteso: PASSATO" << endl;
+    if(*gino != *tony){
+        cout << "Primo test ugualianza PASSATO" << endl << endl;
+    } else {
+        cout << "Primo test ugualianza NON PASSATO" << endl << endl;
+    }
+
+    cout << "2) Risultato atteso: NON PASSATO" << endl;
+    if(*gino != *mona){
+        cout << "Secondo test ugualianza PASSATO" << endl << endl;
+    } else {
+        cout << "Secondo test ugualianza NON PASSATO" << endl << endl;
     }
 
     cout<<"TEST CONTAINER:"<<endl;

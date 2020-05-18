@@ -1,6 +1,6 @@
 #include "../headers/worker.h"
 
-worker::worker(std::string n, std::string sn, std::string cf): name(n), sname(sn), cod_fiscale(cf), last_month_worked_days(0), last_month_worked_hours(0), last_month_salary(0), vac_acc(0) {}
+worker::worker(std::string n, std::string sn, std::string cf): name(n), sname(sn), cod_fiscale(cf), last_month_worked_days(0), last_month_worked_hours(0), last_month_base_salary(0), last_month_bonus_salary(0), last_month_salary(0), vac_acc(0) {}
 
 worker::~worker() {};
 
@@ -44,6 +44,22 @@ void worker::setLastMonthWorkedHours(const int& wh){
     this->last_month_worked_hours = wh;
 }
 
+double worker::getLastMonthBaseSalary() const{
+    return this->last_month_base_salary;
+}
+
+void worker::setLastMonthBaseSalary(const double& bs){
+    this->last_month_base_salary = bs;
+}
+
+double worker::getLastMonthBonusSalary() const{
+    return this->last_month_bonus_salary;
+}
+
+void worker::setLastMonthBonusSalary(const double& bs){
+    this->last_month_bonus_salary = bs;
+}
+
 double worker::getLastMonthSalary() const {
     return this->last_month_salary;
 }
@@ -54,6 +70,10 @@ void worker::setLastMonthSalary(const double& s) {
 
 bool worker::operator==(const worker& w) const{
     return (this->getCodFiscale() == w.getCodFiscale());
+}
+
+bool worker::operator!=(const worker& w) const{
+    return (this->getCodFiscale() != w.getCodFiscale());
 }
 
 int worker::getVacAcc() const {

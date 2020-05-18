@@ -17,6 +17,8 @@ void ptemployee::updateVacAcc() {
 double ptemployee::calcFullSal(const int& wd, const int& wh) {
     worker::updateWorkData(wd, wh);
     updateVacAcc();
-    setLastMonthSalary(calcBaseSal() + calcBonus());
+    this->setLastMonthBaseSalary(calcBaseSal());
+    this->setLastMonthBonusSalary(calcBonus());
+    setLastMonthSalary(this->getLastMonthBaseSalary() + this->getLastMonthBonusSalary());
     return getLastMonthSalary();
 }
