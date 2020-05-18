@@ -7,13 +7,14 @@ class worker
 private:
     std::string name;
     std::string sname;
+    std::string cod_fiscale;
     int last_month_worked_days;
     int last_month_worked_hours;
     double last_month_salary;
     int vac_acc;
 
 public:
-    worker(std::string, std::string);
+    worker(std::string, std::string, std::string);
     virtual ~worker();
 
     std::string getName() const;
@@ -21,6 +22,9 @@ public:
 
     std::string getSname() const;
     void setSname(const std::string&);
+
+    std::string getCodFiscale() const;
+    void setCodFiscale(const std::string&);
 
     int getLastMonthWorkedDays() const;
     void setLastMonthWorkedDays(const int&);
@@ -30,6 +34,8 @@ public:
 
     double getLastMonthSalary() const;
     void setLastMonthSalary(const double&);
+
+    bool operator==(const worker&) const;
 
     int getVacAcc() const;
     void setVacAcc(const int&);

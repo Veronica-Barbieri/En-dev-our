@@ -5,7 +5,7 @@
 
 class ptemployee: public worker, public level0 {
 public:
-    ptemployee(std::string, std::string);
+    ptemployee(std::string, std::string, std::string);
     virtual double calcBaseSal() const override;
     virtual double calcBonus() const override;
     virtual double calcFullSal(const int&, const int&) override;

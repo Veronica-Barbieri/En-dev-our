@@ -1,10 +1,10 @@
-#include "director.h"
+#include "../headers/director.h"
 
 double director::dir_base_bonus_salary = 400;
 double director::dir_bonus_bonus_salary = 1.5; // da aggiungere al bonus di base del contratto full time
 int director::dir_bonus_vac_day = 1;
 
-director::director(std::string n, std::string sn): worker(n, sn), level1() {}
+director::director(std::string n, std::string sn, std::string cf): worker(n, sn, cf), level1() {}
 
 double director::getBaseBonusSalary() const {
     return this->dir_base_bonus_salary;

@@ -1,8 +1,8 @@
 #include <iostream>
-#include "director.h"
-#include "ftemployee.h"
-#include "ptemployee.h"
-#include "container.h"
+#include "../headers/director.h"
+#include "../headers/ftemployee.h"
+#include "../headers/ptemployee.h"
+#include "../headers/container.h"
 
 using std::endl;
 using std::cout;
@@ -10,9 +10,12 @@ using std::cin;
 
 int main()
 {
-    worker* gino = new director("gino", "pasticcino");
-    worker* tony = new ftemployee("tony", "cartony");
-    worker* mona = new ptemployee("mona", "poltrona");
+    cout<<"TEST WORKER E CONTRACT:"<<endl;
+    cout<<"-----------------------"<<endl<<endl;
+
+    worker* gino = new director("gino", "pasticcino", "GP1");
+    worker* tony = new ftemployee("tony", "cartony", "TC1");
+    worker* mona = new ptemployee("mona", "poltrona", "GP1");
 
     double stipg = gino->calcFullSal(24, 216); // ha alvorato 25 giorni per 9 ore ciascun giorno lavorativo
     int vacg = gino->getVacAcc();
@@ -20,14 +23,26 @@ int main()
     double stipt = tony->calcFullSal(20, 200);
     int vact = tony->getVacAcc();
 
-    cout << tony->calcBonus();
-
     double stipm = mona->calcFullSal(20, 80);
     int vacm = mona->getVacAcc();
 
     cout << "Stipendio Gino: " << stipg << endl <<"Vacanze accumulate Gino: " << vacg << endl << endl;
     cout << "Stipendio Tony: " << stipt << endl <<"Vacanze accumulate Tony: " << vact << endl << endl;
     cout << "Stipendio Mona: " << stipm << endl <<"Vacanze accumulate Mona: " << vacm << endl << endl;
+
+    cout << "test operator == :" << endl << "1) Risultato atteso: NON PASSATO" << endl;
+    if(*gino == *tony){
+        cout << "Primo test ugualianza passato" << endl << endl;
+    } else {
+        cout << "Primo test ugualianza non passato" << endl << endl;
+    }
+
+    cout << "2) Risultato atteso:PASSATO" << endl;
+    if(*gino == *mona){
+        cout << "Secondo test ugualianza passato" << endl << endl;
+    } else {
+        cout << "Secondo test ugualianza non passato" << endl << endl;
+    }
 
     cout<<"TEST CONTAINER:"<<endl;
     cout<<"------------------"<<endl<<endl;

@@ -1,6 +1,6 @@
-#include "worker.h"
+#include "../headers/worker.h"
 
-worker::worker(std::string n, std::string sn): name(n), sname(sn), last_month_worked_days(0), last_month_worked_hours(0), last_month_salary(0), vac_acc(0) {}
+worker::worker(std::string n, std::string sn, std::string cf): name(n), sname(sn), cod_fiscale(cf), last_month_worked_days(0), last_month_worked_hours(0), last_month_salary(0), vac_acc(0) {}
 
 worker::~worker() {};
 
@@ -18,6 +18,14 @@ std::string worker::getSname() const {
 
 void worker::setSname(const std::string& sn){
     this->sname = sn;
+}
+
+std::string worker::getCodFiscale() const {
+    return this->cod_fiscale;
+}
+
+void worker::setCodFiscale(const std::string& cf){
+   this->cod_fiscale = cf;
 }
 
 int worker::getLastMonthWorkedDays() const {
@@ -42,6 +50,10 @@ double worker::getLastMonthSalary() const {
 
 void worker::setLastMonthSalary(const double& s) {
     this->last_month_salary = s;
+}
+
+bool worker::operator==(const worker& w) const{
+    return (this->getCodFiscale() == w.getCodFiscale());
 }
 
 int worker::getVacAcc() const {

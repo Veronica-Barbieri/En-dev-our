@@ -8,7 +8,7 @@ private:
     static double ft_base_bonus_salary;
     static int ft_bonus_vac_day;
 public:
-    ftemployee(std::string, std::string);
+    ftemployee(std::string, std::string, std::string);
 
     double getBaseBonusSalary() const;
     int getBonusVacDay() const;

@@ -1,9 +1,9 @@
-#include "ftemployee.h"
+#include "../headers/ftemployee.h"
 
 double ftemployee::ft_base_bonus_salary = 100;
 int ftemployee::ft_bonus_vac_day = 1;
 
-ftemployee::ftemployee(std::string n, std::string sn): worker(n, sn), level1() {}
+ftemployee::ftemployee(std::string n, std::string sn, std::string cf): worker(n, sn, cf), level1() {}
 
 double ftemployee::getBaseBonusSalary() const {
     return this->ft_base_bonus_salary;
