@@ -14,6 +14,7 @@ SOURCES += \
         worker.cpp
 
 HEADERS += \
+    Container.h \
     contract.h \
     director.h \
     ftemployee.h \
