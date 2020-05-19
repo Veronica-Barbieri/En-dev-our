@@ -1,6 +1,6 @@
 #include "../headers/worker.h"
 
-worker::worker(std::string n, std::string sn, std::string cf): name(n), sname(sn), cod_fiscale(cf), last_month_worked_days(0), last_month_worked_hours(0), last_month_base_salary(0), last_month_bonus_salary(0), last_month_salary(0), vac_acc(0) {}
+worker::worker(std::string n, std::string sn, std::string cf): name(n), sname(sn), cod_fiscale(cf), last_month_worked_days(0), last_month_worked_hours(0), last_month_base_salary(0), last_month_bonus_salary(0), last_month_salary(0), seniority(0), vac_acc(0) {}
 
 worker::~worker() {};
 
@@ -74,6 +74,15 @@ bool worker::operator==(const worker& w) const{
 
 bool worker::operator!=(const worker& w) const{
     return (this->getCodFiscale() != w.getCodFiscale());
+}
+
+
+int worker::getSeniority() const{
+    return this->seniority;
+}
+
+void worker::updateSeniority(){
+    this->seniority += 1;
 }
 
 int worker::getVacAcc() const {

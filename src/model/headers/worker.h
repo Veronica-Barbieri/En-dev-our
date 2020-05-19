@@ -13,6 +13,7 @@ private:
     double last_month_base_salary;
     double last_month_bonus_salary;
     double last_month_salary;
+    int seniority;
     int vac_acc;
 
 public:
@@ -43,6 +44,9 @@ public:
     double getLastMonthSalary() const;
     void setLastMonthSalary(const double&);
 
+    int getSeniority() const;
+    void updateSeniority();
+
     int getVacAcc() const;
     void setVacAcc(const int&);
     void resetVacAcc();
@@ -53,6 +57,7 @@ public:
     virtual double calcBonus() const =0; // calcola il bonus da applicare allo stipendio base
     virtual void updateVacAcc() =0; // aggiorna le ferie accumulate
     virtual double calcFullSal(const int&, const int&) =0; // calcola lo stipendio totale
+    // virtual void updateExtraWork() =0;
 
     bool operator!=(const worker&) const;
     bool operator==(const worker&) const;

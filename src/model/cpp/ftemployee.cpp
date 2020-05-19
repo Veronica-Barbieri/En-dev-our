@@ -26,8 +26,9 @@ void ftemployee::updateVacAcc() {
 }
 
 double ftemployee::calcFullSal(const int& wd, const int& wh) {
-    worker::updateWorkData(wd, wh);
+    updateWorkData(wd, wh);
     updateVacAcc();
+    updateSeniority();
     this->setLastMonthBaseSalary(calcBaseSal());
     this->setLastMonthBonusSalary(calcBonus());
     setLastMonthSalary(this->getLastMonthBaseSalary() + this->getLastMonthBonusSalary());
