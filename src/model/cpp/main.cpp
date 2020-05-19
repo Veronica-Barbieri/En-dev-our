@@ -13,11 +13,12 @@ int main()
     cout<<"TEST WORKER E CONTRACT:"<<endl;
     cout<<"-----------------------"<<endl<<endl;
 
-    worker* gino = new director("gino", "pasticcino", "GP1");
-    worker* tony = new ftemployee("tony", "cartony", "TC1");
-    worker* mona = new ptemployee("mona", "poltrona", "GP1");
+    worker* gino = new director("Gino", "Pasticcino", "GP1");
+    worker* tony = new ftemployee("Tony", "Cartony", "TC1");
+    worker* mona = new ptemployee("Mona", "Poltrona", "GP1");
 
     gino->calcFullSal(24, 216); // ha alvorato 25 giorni per 9 ore ciascun giorno lavorativo
+    gino->calcFullSal(24, 200);
 
     tony->calcFullSal(20, 200);
 
@@ -32,6 +33,7 @@ int main()
     cout << "Stipendio base: " << gino->getLastMonthBaseSalary() << endl;
     cout << "Bonus: " << gino->getLastMonthBonusSalary() << endl;
     cout << "Stipendio totale: " << gino->getLastMonthSalary() << endl;
+    cout << "Anzianita': " << gino->getSeniority() << " mesi " << endl;
     cout << "Giorni ferie accumualti: " << gino->getVacAcc() << endl << endl;
 
     cout << "2)" << endl << "Nome: " << tony->getName() << endl;
@@ -42,6 +44,7 @@ int main()
     cout << "Stipendio base: " << tony->getLastMonthBaseSalary() << endl;
     cout << "Bonus: " << tony->getLastMonthBonusSalary() << endl;
     cout << "Stipendio totale: " << tony->getLastMonthSalary() << endl;
+    cout << "Anzianita': " << tony->getSeniority() << " mesi "  << endl;
     cout << "Giorni ferie accumualti: " << tony->getVacAcc() << endl << endl;
 
     cout << "1)" << endl << "Nome: " << mona->getName() << endl;
@@ -52,6 +55,7 @@ int main()
     cout << "Stipendio base: " << mona->getLastMonthBaseSalary() << endl;
     cout << "Bonus: " << mona->getLastMonthBonusSalary() << endl;
     cout << "Stipendio totale: " << mona->getLastMonthSalary() << endl;
+    cout << "Anzianita': " << mona->getSeniority() << " mesi "  << endl;
     cout << "Giorni ferie accumualti: " << mona->getVacAcc() << endl << endl;
 
 
