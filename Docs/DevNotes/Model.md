@@ -54,7 +54,7 @@ Possibili convenzioni di nomenclatura:
 
 #### Documentazione
 
-- Vengono omessi nomi e descrizioni dei getter e setter per i campi dati (il nome del getter corrisponde perfettamente con il campo dati di cui vengono recuperati i contenuti)
+- Vengono omessi nomi e descrizioni dei getter e setter per i campi dati (il nome del getter o del setter corrisponde perfettamente con il nome del campo dati di cui vengono recuperati i contenuti)
 
 ## Realtà aziendale
 
@@ -69,9 +69,9 @@ Il punto vendita viene visto come una collezione di dipendenti che possono aderi
 | Nome | Valore |
 | ---- | ------ |
 | Ore lavoro giornaliero | 4 ore |
-| Compenso orario | 7.5 euro |
+| Compenso orario | 9 euro |
 | Giorni feriali accumulabili mensilmente | 1 giorno |
-| Bonus ore straordinario | 0.5 euro |
+| Bonus ore straordinario | 1.0 euro |
 
 #### Full Time 
 
@@ -101,8 +101,8 @@ Il punto vendita viene visto come una collezione di dipendenti che possono aderi
 | Nome | Valore |
 | ---- | ------ |
 | Salario base bonus | 400 |
-| Giorni ferie bonus | 1.5 |
-| Bonus aggiuntivo su ore straordinario | 1 |
+| Giorni ferie bonus | 1 |
+| Bonus aggiuntivo su ore straordinario | 1.5 |
 
 
 ## Gerarchia di classi
@@ -137,13 +137,17 @@ class worker
 private:
     std::string name;
     std::string sname;
+    std::string cod_fiscale;
     int last_month_worked_days;
     int last_month_worked_hours;
+    double last_month_base_salary;
+    double last_month_bonus_salary;
     double last_month_salary;
+    int seniority;
     int vac_acc;
 
 public:
-    worker(std::string, std::string);
+    worker(std::string, std::string, std::string);
     virtual ~worker();
 
     std::string getName() const;
@@ -152,25 +156,41 @@ public:
     std::string getSname() const;
     void setSname(const std::string&);
 
+    std::string getCodFiscale() const;
+    void setCodFiscale(const std::string&);
+
     int getLastMonthWorkedDays() const;
     void setLastMonthWorkedDays(const int&);
 
     int getLastMonthWorkedHours() const;
     void setLastMonthWorkedHours(const int&);
 
+    double getLastMonthBaseSalary() const;
+    void setLastMonthBaseSalary(const double&);
+
+    double getLastMonthBonusSalary() const;
+    void setLastMonthBonusSalary(const double&);
+
     double getLastMonthSalary() const;
     void setLastMonthSalary(const double&);
+
+    int getSeniority() const;
+    void updateSeniority();
 
     int getVacAcc() const;
     void setVacAcc(const int&);
     void resetVacAcc();
 
-    void updateWorkData(const int&, const int&); 
+    void updateWorkData(const int&, const int&); // aggiorna ore e giorni lavorati in un mese
 
-    virtual double calcBaseSal() const =0; 
-    virtual double calcBonus() const =0; 
-    virtual void updateVacAcc() =0; 
-    virtual double calcFullSal(const int&, const int&) =0;
+    virtual double calcBaseSal() const =0; // calcola lo stipendio base partendo dalle ore lavorate nel mese e dai giorni lavorati nel mese
+    virtual double calcBonus() const =0; // calcola il bonus da applicare allo stipendio base
+    virtual void updateVacAcc() =0; // aggiorna le ferie accumulate
+    virtual double calcFullSal(const int&, const int&) =0; // calcola lo stipendio totale
+    // virtual void updateExtraWork() =0;
+
+    bool operator!=(const worker&) const;
+    bool operator==(const worker&) const;
 };
 ```
 
@@ -183,6 +203,7 @@ public:
 | last_month_worked_days | I giorni lavorati nell'ultimo mese |
 | last_month_worked_hours | Le ore lavorate nell'ultimo mese |
 | last_month_salary | L'ultimo stipendio percepito |
+| seniority | Anzianita' del deipendente espressa in mesi |
 | vac_acc | I giorni di ferie accumulati dal lavoratore |
 
 #### Metodi
@@ -194,6 +215,7 @@ public:
 | calcBaseSal() | calcola lo stipendio base senza tenere conto di eventuali ore di straordinario |
 | calcBonus() | calcola lo stipendio bonus accumulato nelle ore di straordinario lavorate |
 | updateVacAcc() | aggiorna il valore relativo alle ferie accumulate |
+| updateSeniority() | aggiorna i mesi di anzianita' del lavoratore |
 | calcFullSal() | calcola lo stipendio completo (base+bonus) e aggiorna le ferie accumulate (è sostanzialmente un wrapper per gli altri metodi) |
 
 ### Contract
@@ -201,31 +223,18 @@ public:
 ```c++
 class contract
 {
-private:
-    int work_hours;
-    double salary;
-    double salary_bonus; 
-    int vac_per_month; 
-
 public:
-    contract(int, double, double, int);
+    contract();
     virtual ~contract();
-    virtual int getWorkHours() const;
-    virtual double getSalary() const;
-    virtual double getSalaryBonus() const;
-    virtual int getVacPerMonth() const;
+    virtual int getWorkHours() const =0;
+    virtual double getSalary() const =0;
+    virtual double getSalaryBonus() const =0;
+    virtual int getVacPerMonth() const =0;
     virtual std::string getContractType() const=0;
 };
 ```
 
 #### Campi dati
-
-| Nome | Descrizione |
-| ---- | ----------- |
-| work_hours | le ore di lavoro giornaliero previste |
-| salary | guadagno orario |
-| salary_bonus | il guadagno extra da aggiungere a salary per le ore di straordinario |
-| vac_per_month | i giorni di ferie guadagnati dopo un mese di lavoro |
 
 #### Metodi
 
@@ -238,9 +247,17 @@ public:
 ```c++
 class level0: public contract {
 private:
+    static int work_hours;
+    static double salary;
+    static double salary_bonus;
+    static int vac_per_month;
     static std::string pt_contr_name;
 public:
     level0();
+    virtual int getWorkHours() const override;
+    virtual double getSalary() const override;
+    virtual double getSalaryBonus() const override;
+    virtual int getVacPerMonth() const override;
     virtual std::string getContractType() const override;
 };
 ```
@@ -248,6 +265,10 @@ public:
 
 | Nome | Descrizione |
 | ---- | ----------- |
+| work_hours | le ore di lavoro giornaliero previste |
+| salary | guadagno orario |
+| salary_bonus | il guadagno extra da aggiungere a salary per le ore di straordinario |
+| vac_per_month | i giorni di ferie guadagnati dopo un mese di lavoro |
 | pt_contr_name | nome contratto impostato a "Part Time" |
 
 ### Level1
@@ -255,9 +276,17 @@ public:
 ```c++
 class level1: public contract {
 private:
+    static int work_hours;
+    static double salary;
+    static double salary_bonus;
+    static int vac_per_month;
     static std::string ft_contr_name;
 public:
     level1();
+    virtual int getWorkHours() const override;
+    virtual double getSalary() const override;
+    virtual double getSalaryBonus() const override;
+    virtual int getVacPerMonth() const override;
     virtual std::string getContractType() const override;
 };
 ```
@@ -266,6 +295,10 @@ public:
 
 | Nome | Descrizione |
 | ---- | ----------- |
+| work_hours | le ore di lavoro giornaliero previste |
+| salary | guadagno orario |
+| salary_bonus | il guadagno extra da aggiungere a salary per le ore di straordinario |
+| vac_per_month | i giorni di ferie guadagnati dopo un mese di lavoro |
 | ft_contr_name | nome contratto impostato a "Full Time" |
 
 ### Ptemployee
