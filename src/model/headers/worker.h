@@ -17,6 +17,7 @@ private:
     int vac_acc;
 
 public:
+    worker();
     worker(std::string, std::string, std::string);
     virtual ~worker();
 

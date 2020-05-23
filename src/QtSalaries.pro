@@ -11,7 +11,8 @@ SOURCES += \
         model/cpp/level1.cpp \
         model/cpp/main.cpp \
         model/cpp/ptemployee.cpp \
-        model/cpp/worker.cpp
+        model/cpp/worker.cpp \
+        paycheck/paycheck.cpp
 
 HEADERS += \
     model/headers/container.h \
@@ -21,4 +22,5 @@ HEADERS += \
     model/headers/level0.h \
     model/headers/level1.h \
     model/headers/ptemployee.h \
-    model/headers/worker.h
+    model/headers/worker.h \
+    paycheck/paycheck.h

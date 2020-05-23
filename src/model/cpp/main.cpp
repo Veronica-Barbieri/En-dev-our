@@ -3,6 +3,7 @@
 #include "../headers/ftemployee.h"
 #include "../headers/ptemployee.h"
 #include "../headers/container.h"
+#include "../../paycheck/paycheck.h"
 
 using std::endl;
 using std::cout;
@@ -15,7 +16,10 @@ int main()
 
     worker* gino = new director("Gino", "Pasticcino", "GP1");
     worker* tony = new ftemployee("Tony", "Cartony", "TC1");
+    worker* carla = new ftemployee("Carla", "Tegola", "CT2");
+    worker* eolo = new ftemployee("Eolo", "Peolo", "EP9");
     worker* mona = new ptemployee("Mona", "Poltrona", "GP1");
+    worker* gianni = new ptemployee("Gianni", "Malanni", "GM4");
 
     gino->calcFullSal(24, 216); // ha alvorato 25 giorni per 9 ore ciascun giorno lavorativo
     gino->calcFullSal(24, 200);
@@ -171,6 +175,138 @@ int main()
     /*cout<<"cont_sum[3]:  "<<endl;
     cout<<cont_sum[3];
     cout<<endl;*/
+
+    cont2.swap(2,4);
+    cout<<"Container 2 con swap completo: "<<endl;
+    cout<<"size: "<<cont2.getSize()<<endl;
+    for(int i=0; i<cont2.getSize(); ++i){
+        cout<<(cont2.getNodoFromIndex(i))->info<<"  ";
+    }
+
+    cout<<endl;
+    cout<<endl;
+
+    Container<int*> cont_punt;
+    int p1 = 1;
+    int p2 = 2;
+    int* p1p = &p1;
+    int* p2p = &p2;
+
+    cont_punt.pushBack(p1p);
+    cont_punt.pushBack(p2p);
+
+    cont_punt.swap(0, 1);
+
+    cout<<"Container punt con swap: "<<endl;
+    cout<<"size: "<<cont_punt.getSize()<<endl;
+    for(int i=0; i<cont_punt.getSize(); ++i){
+        cout<< *(cont_punt.getNodoFromIndex(i))->info<<"  ";
+    }
+
+    cout<<endl;
+    cout<<endl;
+
+
+
+    cout<<"TEST PAYCHECK:"<<endl;
+    cout<<"-----------------------"<<endl<<endl;
+
+    paycheck p;
+
+    p.addEmp(mona);
+    p.addEmp(gino);
+    p.addEmp(tony);
+    p.addEmp(carla);
+    p.addEmp(gianni);
+    p.addEmp(eolo);
+
+    cout << "DISPLAY DEL CONTAINER ORIGINALE" << endl;
+
+    p.dispAll();
+
+    /*
+
+    cout << "Test metodo isPresent() :" << endl << "1) Risultato atteso: NON PASSATO" << endl;
+    if(p.isPresent("FF1")){
+        cout << "Test PASSATO" << endl << endl;
+    } else {
+        cout << "Test NON PASSATO" << endl << endl;
+    }
+
+    cout << "Test metodo hasDirector() :" << endl << "2) Risultato atteso: PASSATO" << endl;
+    if(p.hasDirector()){
+        cout << "Test PASSATO" << endl << endl;
+    } else {
+        cout << "Test NON PASSATO" << endl << endl;
+    }
+
+    N.B.: Funziona tutto ma le stampe tutte insieme ti distruggono l'anima, controllare una per volta
+
+    p.remEmp(mona);
+
+    p.addEmp("Mona", "Poltrona", "MP1", "parttime");
+
+    p.promotePtEmp("MP1");
+
+    p.calcAllFullSal();
+
+    cout << "DISPLAY DEI DATI RIORDINATI: " << endl << endl;
+
+    cout << "ORDINATI PER RUOLO: " << endl << endl;
+
+    p.orderByRole();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER STIPENDIO PIU' ALTO: " << endl << endl;
+
+    p.orderByFullSalMax();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER BONUS STIPENDIO PIU' ALTO: " << endl << endl;
+
+    p.orderByBonusSalMax();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER ORE LAVORATE PIU' ALTE: " << endl << endl;
+
+    p.orderByWorkedHoursMax();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER ANZIANITA' PIU' ALTA: " << endl << endl;
+
+    p.orderBySeniorityMax();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER STIPENDIO PIU' BASSO: " << endl << endl;
+
+    p.orderByFullSalMin();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER BONUS STIPENDIO PIU' BASSO: " << endl << endl;
+
+    p.orderByBonusSalMin();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER ORE LAVORATE PIU' BASSE: " << endl << endl;
+
+    p.orderByWorkedHoursMin();
+
+    p.dispAll();
+
+    cout << "ORDINATI PER ANZIANITA' PIU' BASSA: " << endl << endl;
+
+    p.orderBySeniorityMin();
+
+    p.dispAll();
+
+    */
 
     return 0;
 }

@@ -36,13 +36,15 @@ public:
     void insert (int, const T&); //
     void remove (Nodo*);
     void remove (const int&);
+    void substitute(const T&, const T&);// AGGIUNTO DA GIACOMO
+    void swap(const int&, const int&); //
     bool exists (const T&) const;
     int getSize () const{return size;} //
     void clear();
 
     Container<T>& operator= (const Container<T>&);
     Container<T> operator+ (const Container<T>&);
-    T& operator[] (const int&);
+    T& operator[] (const int&) const;
 };
 
 template<class T>
@@ -174,6 +176,25 @@ void Container<T>::remove(const int& pos) {
 }
 
 template<class T>
+void Container<T>::substitute(const T& tbs, const T& tsw) {
+    Nodo* to_sub = this->getNodoFromInfo(tbs);
+    delete to_sub->info;
+    to_sub->info = tsw;
+    return;
+} // AGGIUNTO DA GIACOMO
+
+template<class T>
+void Container<T>::swap (const int& f, const int& s) {
+    T fn = (getNodoFromIndex(f))->info;
+    T sn = (getNodoFromIndex(s))->info;
+
+    remove(f);
+    insert(f, sn);
+    remove(s);
+    insert(s, fn);
+}
+
+template<class T>
 bool Container<T>::exists(const T& n) const {
     Nodo* aux = first;
         for(int i=0; i<size; ++i){
@@ -225,7 +246,7 @@ Container<T> Container<T>::operator+ (const Container<T>& cont) {
 }
 
 template<class T>
-T& Container<T>::operator[] (const int& pos) {
+T& Container<T>::operator[] (const int& pos) const {
     return (getNodoFromIndex(pos))->info;
 }
 

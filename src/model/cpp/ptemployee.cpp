@@ -1,6 +1,10 @@
 #include "../headers/ptemployee.h"
 
+ptemployee::ptemployee(): worker(), level0() {}
+
 ptemployee::ptemployee(std::string n, std::string sn, std::string cf): worker(n, sn, cf), level0() {};
+
+ptemployee::ptemployee(const worker& w): worker(w), level0() {}
 
 double ptemployee::calcBaseSal() const {
     return worker::getLastMonthWorkedDays() * level0::getWorkHours() * level0::getSalary();

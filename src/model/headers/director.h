@@ -11,7 +11,9 @@ private:
     static int dir_bonus_vac_day;
 
 public:
+    director();
     director(std::string, std::string, std::string);
+    director(const worker&);
 
     double getBaseBonusSalary() const;
     double getBonusBonusSalary() const;
