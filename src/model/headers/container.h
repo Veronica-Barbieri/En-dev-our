@@ -94,8 +94,8 @@ template<class T>
 void Container<T>::pushFront(const T& n) {
     if(size == 0){
         first = new Nodo(n);
-        first->next = first;
-        first->prev = first;
+        first->next = nullptr;
+        first->prev = nullptr;
         last = first;
     }else{
         Nodo* aux = first;
