@@ -40,6 +40,8 @@ public:
     void swap(const int&, const int&); //
     bool exists (const T&) const;
     int getSize () const{return size;} //
+    Nodo* getFirst () const{return first;}
+    Nodo* getLast () const{return last;}
     void clear();
 
     Container<T>& operator= (const Container<T>&);
