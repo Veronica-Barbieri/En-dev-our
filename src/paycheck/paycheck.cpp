@@ -1,8 +1,16 @@
 #include "paycheck.h"
 
-paycheck::paycheck(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0), tot_worked_hours(0), highest_sal(0), highest_worked_hours(0), highest_seniority(0) {}
+paycheck::paycheck(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0),  highest_sal(0), tot_worked_hours(0), highest_worked_hours(0), highest_seniority(0) {}
 
-paycheck::~paycheck() {};
+paycheck::~paycheck() {}
+
+int paycheck::getSize() const{
+    return pc.getSize();
+}
+
+worker* paycheck::getWorkerFromIndex(int i) const {
+    return pc.getNodoFromIndex(i)->info;
+}
 
 void paycheck::updateTotSalaries(const double& up) {
     this->tot_salaries += up;
@@ -14,6 +22,14 @@ void paycheck::updateTotBonusSalaries(const double& up) {
 
 void paycheck::updateTotWorkedHours(const int& up) {
     this->tot_worked_hours += up;
+}
+
+double paycheck::getTotSal() const {
+    return this->tot_salaries;
+}
+
+double paycheck::getTotBuonusSal() const {
+    return this->tot_bonus_salaries;
 }
 
 worker* paycheck::retrieveWorkerFromCf(const std::string& cf) const {
@@ -30,6 +46,25 @@ worker* paycheck::retrieveWorkerFromCf(const std::string& cf) const {
     }
     return aux;
 }
+
+worker* paycheck::getWorkerAtPos(const int& i) const {
+    return pc.getNodoFromIndex(i)->info;
+}
+
+Container<worker *> paycheck::getWorkers() const {
+    return pc;
+}
+
+void paycheck::resetPaycheck() {
+    pc.clear();
+    tot_salaries = 0;
+    tot_bonus_salaries = 0;
+    highest_sal = 0;
+    tot_worked_hours = 0;
+    highest_worked_hours = 0;
+    highest_seniority = 0;
+}
+
 
 bool paycheck::isPresent(const std::string& w) const {
     if(retrieveWorkerFromCf(w)==nullptr){
@@ -58,11 +93,11 @@ bool paycheck::hasDirector() const {
 void paycheck::addEmp(const std::string& n, const std::string& sn, const std::string& cf, const std::string& tc) {
     worker* aux;
 
-    if(tc=="fulltime") {
+    if(tc=="Full-Time") {
         aux = new ftemployee(n, sn, cf);
-    } else if (tc == "parttime") {
+    } else if (tc == "Part-Time") {
         aux = new ptemployee(n, sn, cf);
-    } else if (tc == "director") {
+    } else if (tc == "Direttore") {
         aux = new director(n, sn, cf);
     } else {
         std::cout << "Input incorretto, selezionare un tipo di contratto tra director, fulltime e parttime" << std::endl;
@@ -120,6 +155,27 @@ void paycheck::calcAllFullSal() {
     this->updateHighestSeniority();
 }
 
+void paycheck::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
+    int wd;
+    int wh;
+    int s_count = 0;
+    this->resetPaycheckData();
+
+    for(std::vector<std::pair<int, int>>::const_iterator it = collection.begin(); it != collection.end(); it++){
+        wd = it->first;
+        wh = it->second;
+        pc[s_count]->calcFullSal(wd, wh);
+        this->updateTotSalaries(pc[s_count]->getLastMonthSalary());
+        this->updateTotBonusSalaries(pc[s_count]->getLastMonthBonusSalary());
+        this->updateTotWorkedHours(pc[s_count]->getLastMonthWorkedHours());
+        s_count++;
+    }
+
+    this->updateHighestSal();
+    this->updateHighestWorkedHours();
+    this->updateHighestSeniority();
+}
+
 void paycheck::promotePtEmp(const std::string& cf) {
     worker* aux = this->retrieveWorkerFromCf(cf);
     if(dynamic_cast<ptemployee*>(aux)){
@@ -158,6 +214,10 @@ double paycheck::getHighestSal() const {
         }
     }
     return highestSal;
+}
+
+int paycheck::getTotWorkedHours() const {
+    return this->tot_worked_hours;
 }
 
 void paycheck::updateHighestSal() {
