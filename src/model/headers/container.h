@@ -33,6 +33,7 @@ public:
 
     void pushFront (const T&); //
     void pushBack (const T&); //
+    /*pop back / pop front */
     void insert (int, const T&); //
     void remove (Nodo*);
     void remove (const int&);
@@ -40,13 +41,42 @@ public:
     void swap(const int&, const int&); //
     bool exists (const T&) const;
     int getSize () const{return size;} //
+    Nodo* getFirst () const{return first;}
+    //T getPrev (Nodo*) const;
+    Nodo* getLast () const{return last;}
     void clear();
 
     Container<T>& operator= (const Container<T>&);
     Container<T> operator+ (const Container<T>&);
     T& operator[] (const int&) const;
+
+    class ConstIterator {
+            friend class Container<T>;
+            private:
+                const Nodo * ptr;
+                int pos;
+                bool end;
+                bool start;
+            public:
+                ConstIterator() : ptr(nullptr), pos(0), end(false), start(false){}
+                ConstIterator(Nodo* n, int i = 0, bool e = false, bool s = false) : ptr(n), pos(i), end(e), start(s) {}
+                ~ConstIterator() = default;
+                const T& operator *() const;
+                const T* operator ->() const;
+                ConstIterator& operator++();
+                ConstIterator& operator--();
+                bool operator ==(const ConstIterator &) const;
+                bool operator !=(const ConstIterator &) const;
+                int getPos() const;
+                bool isEnd() const;
+                bool isStart() const;
+        };
 };
 
+
+//------------------------------------
+//Implementazione metodi Container
+//------------------------------------
 template<class T>
 Container<T>::Container(const Container<T>& copy_cont){
     first = nullptr;
@@ -88,12 +118,17 @@ int Container<T>::getIndex(Nodo* n) const {
     return count;
 }
 
+/*template<class T>
+T Container<T>::getPrev(Nodo* n) const {
+    return n->prev.info;
+}*/
+
 template<class T>
 void Container<T>::pushFront(const T& n) {
     if(size == 0){
         first = new Nodo(n);
-        first->next = first;
-        first->prev = first;
+        first->next = nullptr;
+        first->prev = nullptr;
         last = first;
     }else{
         Nodo* aux = first;
@@ -248,6 +283,70 @@ Container<T> Container<T>::operator+ (const Container<T>& cont) {
 template<class T>
 T& Container<T>::operator[] (const int& pos) const {
     return (getNodoFromIndex(pos))->info;
+}
+
+//------------------------------------
+//Implementazione metodi ConstIterator
+//------------------------------------
+template<class T>
+const T& Container<T>::ConstIterator::operator* () const {
+    return ptr->info;
+}
+
+template<class T>
+const T* Container<T>::ConstIterator::operator-> () const {
+    return &(ptr->info);
+}
+
+template<class T>
+typename Container<T>::ConstIterator& Container<T>::ConstIterator::operator++ () {
+    if(!end){
+        if(ptr->next){
+           ptr = ptr->next;
+        }else{
+            end = true;
+        }
+        ++pos; //past the end
+    }
+    return *this; //return ConstIterator
+}
+
+template<class T>
+typename Container<T>::ConstIterator& Container<T>::ConstIterator::operator-- () {//TO CKECK
+    if(!start){
+        if(ptr->prev){
+           ptr = ptr->prev;
+        }else{
+            start = true;
+        }
+        --pos; //past the start?
+    }
+    return *this; //return ConstIterator
+}
+
+template<class T>
+bool Container<T>::ConstIterator::operator== (const ConstIterator & checkIter) const {
+    return ptr == checkIter.ptr;
+}
+
+template<class T>
+bool Container<T>::ConstIterator::operator!= (const ConstIterator & checkIter) const {
+    return ptr != checkIter.ptr;
+}
+
+template<class T>
+int Container<T>::ConstIterator::getPos() const {
+    return pos;
+}
+
+template<class T>
+bool Container<T>::ConstIterator::isEnd() const {
+    return end;
+}
+
+template<class T>
+bool Container<T>::ConstIterator::isStart() const {
+    return start;
 }
 
 #endif // CONTAINER_H
