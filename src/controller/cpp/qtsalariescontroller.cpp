@@ -1,4 +1,5 @@
 #include "../header/qtsalariescontroller.h"
+#include <exception>
 
 QtSalariesController::QtSalariesController(paycheck* m, QSalaries* v, QObject *parent) : QObject(parent), model(m), view(v) {}
 
@@ -20,8 +21,13 @@ int QtSalariesController::modelSize() const {
     return model->getSize();
 }
 
-Container<worker *> QtSalariesController::getCurrCont() const {
-    return model->getWorkers();
+Container<worker *> QtSalariesController::getCurrCont() {
+    try {
+        return model->getWorkers();
+    } catch (std::domain_error e) {
+        emit showError(e.what());
+        return Container<worker*>();
+    }
 }
 
 worker* QtSalariesController::operator[](const int& i) const {
@@ -29,21 +35,33 @@ worker* QtSalariesController::operator[](const int& i) const {
 }
 
 void QtSalariesController::addEmp(const std::string& n, const std::string& sn, const std::string& cf, const std::string& contr) {
-    model->addEmp(n, sn, cf, contr);
-    view->updateList();
+    try {
+        model->addEmp(n, sn, cf, contr);
+        view->updateList();
+    } catch (std::domain_error e) {
+        emit showError(e.what());
+        //view->showErrorDialog(e.what());
+    }
 }
 
 void QtSalariesController::delEmp(const std::string& cf) {
-    worker* aux = model->retrieveWorkerFromCf(cf);
-    model->remEmp(aux);
-    view->updateList();
+    try {
+        worker* aux = model->retrieveWorkerFromCf(cf);
+        model->remEmp(aux);
+        view->updateList();
+    } catch (std::domain_error e) {
+        emit showError(e.what());
+    }
 }
 
 void QtSalariesController::promoEmp(const std::string& cf) {
-    worker* aux = model->retrieveWorkerFromCf(cf);
-    /* gestione dell'eccezione? */
-    model->promotePtEmp(aux);
-    view->updateList();
+    try {
+        worker* aux = model->retrieveWorkerFromCf(cf);
+        model->promotePtEmp(aux);
+        view->updateList();
+    } catch (std::domain_error e) {
+        emit showError(e.what());
+    }
 }
 
 void QtSalariesController::updateInfEmp(const std::string& cf) {

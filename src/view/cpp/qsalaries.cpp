@@ -1,5 +1,6 @@
 #include "../headers/qsalaries.h"
 #include "../../controller/header/qtsalariescontroller.h"
+#include <QMessageBox>
 
 QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent), controller(c) {
     QVBoxLayout* window_layout = new QVBoxLayout(this);
@@ -94,6 +95,8 @@ QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent)
     main_layout->addLayout(buttons_layout);
     buttons_layout->setAlignment(Qt::AlignLeft);
     window_layout->addLayout(main_layout);
+
+    connect(controller, SIGNAL(showError(std::string)), this, SLOT(showErrorDialog(std::string)));
 }
 
 void QSalaries::showAddDialog() {
@@ -134,10 +137,12 @@ void QSalaries::showPromoDialog() {
 }
 
 void QSalaries::showCalcFullSalDialog() {
-    QDialog* dialog = new QDialog(this);
-    QScrollArea* scroll_calc = new QScrollArea(dialog);
-
     Container<worker*> curr_workers = controller->getCurrCont();
+
+    if(curr_workers.getSize() != 0){
+
+        QDialog* dialog = new QDialog(this);
+        QScrollArea* scroll_calc = new QScrollArea(dialog);
 
     QEmployeeListForCalc* calcFullSalDialog = new QEmployeeListForCalc(dialog, curr_workers);
 
@@ -151,6 +156,7 @@ void QSalaries::showCalcFullSalDialog() {
     dialog->setFixedSize(QSize(430, 480));
     dialog->setModal(true);
     dialog->show();
+    }
 }
 
 void QSalaries::updateList() {
@@ -203,4 +209,13 @@ void QSalaries::fillList() {
         }
         addEmpToList(curr_emp->getName(), curr_emp->getSname(), curr_emp->getCodFiscale(), contr);
     }
+}
+
+void QSalaries::showErrorDialog(const std::string& err) {
+    QMessageBox* err_dialog = new QMessageBox(this);
+    err_dialog->setText(QString::fromStdString(err));
+
+    err_dialog->setFixedSize(QSize(230, 150));
+    err_dialog->setModal(true);
+    err_dialog->show();
 }

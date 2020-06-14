@@ -1,4 +1,5 @@
 #include "paycheck.h"
+#include <exception>
 
 paycheck::paycheck(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0),  highest_sal(0), tot_worked_hours(0), highest_worked_hours(0), highest_seniority(0) {}
 
@@ -52,6 +53,9 @@ worker* paycheck::getWorkerAtPos(const int& i) const {
 }
 
 Container<worker *> paycheck::getWorkers() const {
+    if(pc.getSize() == 0){
+        throw std::domain_error("There are no workers in this payroll");
+    }
     return pc;
 }
 
@@ -93,6 +97,13 @@ bool paycheck::hasDirector() const {
 void paycheck::addEmp(const std::string& n, const std::string& sn, const std::string& cf, const std::string& tc) {
     worker* aux;
 
+    if(isPresent(cf)){
+        throw std::domain_error("CF already exists in this payroll");
+    }
+    if(hasDirector() && tc == "Direttore"){
+        throw std::domain_error("A director already exists in this payroll");
+    }
+
     if(tc=="Full-Time") {
         aux = new ftemployee(n, sn, cf);
     } else if (tc == "Part-Time") {
@@ -115,6 +126,13 @@ void paycheck::addEmp(worker* emp) {
 void paycheck::remEmp(const std::string& n, const std::string& sn, const std::string& cf,  const std::string& tc) {
     worker* aux;
 
+    if(!isPresent(cf)){
+        throw std::domain_error("No employee with that CF in this payroll");
+    }
+    /*if(dynamic_cast<director*>(retrieveWorkerFromCf(cf))){
+        throw std::domain_error("canot remove director");
+    }*/
+
     if(tc=="fulltime") {
         aux = new ftemployee(n, sn, cf);
     } else if (tc == "parttime") {
@@ -130,6 +148,12 @@ void paycheck::remEmp(const std::string& n, const std::string& sn, const std::st
 }
 
 void paycheck::remEmp(worker* w) {
+    if(!isPresent(w)){
+        throw std::domain_error("No employee with that CF in this payroll");
+    }
+    /*if(dynamic_cast<director*>(w)){
+        throw std::domain_error("canot remove director");
+    }*/
     pc.remove(pc.getNodoFromInfo(w));
     return;
 }
@@ -178,23 +202,41 @@ void paycheck::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
 
 void paycheck::promotePtEmp(const std::string& cf) {
     worker* aux = this->retrieveWorkerFromCf(cf);
-    if(dynamic_cast<ptemployee*>(aux)){
+    /*if(dynamic_cast<ptemployee*>(aux)){
         worker* new_worker = new ftemployee(*aux);
         pc.substitute(aux, new_worker);
     } else {
         std::cout << "Impiegato non trovato o gia' con contratto FullTime" << std::endl;
     }
+    return;*/
+    if(!isPresent(cf)){
+        throw std::domain_error("No employee with that CF in this payroll");
+    }
+    if(!dynamic_cast<ptemployee*>(aux)){
+        throw std::domain_error("Cannot promote a non part-time employee");
+    }
+    worker* new_worker = new ftemployee(*aux);
+    pc.substitute(aux, new_worker);
     return;
 }
 
 void paycheck::promotePtEmp(worker* w){
-     if(dynamic_cast<ptemployee*>(w)){
+     /*if(dynamic_cast<ptemployee*>(w)){
         worker* new_worker = new ftemployee(*w);
         pc.substitute(w, new_worker);
      } else {
          std::cout << "Impiegato non trovato o gia' con contratto FullTime" << std::endl;
      }
-     return;
+     return;*/
+    if(!isPresent(w)){
+        throw std::domain_error("No employee with that CF in this payroll");
+    }
+    if(!dynamic_cast<ptemployee*>(w)){
+        throw std::domain_error("Cannot promote a non part-time employee");
+    }
+    worker* new_worker = new ftemployee(*w);
+    pc.substitute(w, new_worker);
+    return;
 }
 
 std::string paycheck::findDirCodFisc() const {

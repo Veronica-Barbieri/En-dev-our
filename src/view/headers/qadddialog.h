@@ -29,9 +29,11 @@ public:
 
 signals:
     void emitAdd(const std::string&, const std::string&, const std::string&, const std::string&);
+    void enableConfirm(const bool&);
 
 public slots:
     void slotAdd();
+    void checkFilled();
 
 };
 

@@ -19,10 +19,11 @@ public:
     int getNumberOfEmp() const;
     void addView(QSalaries*);
     int modelSize() const;
-    Container<worker*> getCurrCont() const;
+    Container<worker*> getCurrCont();
     worker* operator[](const int&) const;
 
 signals:
+    void showError(const std::string&);
 
 public slots:
     void addEmp(const std::string&, const std::string&, const std::string&, const std::string&);

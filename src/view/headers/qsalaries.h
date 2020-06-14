@@ -64,6 +64,7 @@ public slots:
     void showDelDialog();
     void showPromoDialog();
     void showCalcFullSalDialog();
+    void showErrorDialog(const std::string&);
 };
 
 #endif // QSALARIES_H
