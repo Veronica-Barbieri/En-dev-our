@@ -10,6 +10,7 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QFormLayout>
+#include <QMessageBox>
 #include "qemployeelist.h"
 #include "qemployeeinfo.h"
 #include "qpayrollinfo.h"
@@ -49,8 +50,10 @@ public:
                          const std::string&, const std::string&, const std::string&,
                          const std::string&, const std::string&);
     void updatePayrollInfo(const std::string&, const std::string&, const std::string&,
-                           const std::string&, const std::string&, const std::string&);
+                           const std::string&, const std::string&, const std::string&,
+                           const std::string&, const std::string&);
     void clearView();
+    std::string currentDisplayedWorker();
 
 
 signals:
@@ -64,6 +67,7 @@ public slots:
     void showDelDialog();
     void showPromoDialog();
     void showCalcFullSalDialog();
+    void showAbout();
 };
 
 #endif // QSALARIES_H

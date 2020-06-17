@@ -20,7 +20,7 @@ public:
     void addView(QSalaries*);
     int modelSize() const;
     Container<worker*> getCurrCont() const;
-    worker* operator[](const int&) const;
+    worker* operator[](const int&) const;    
 
 signals:
 
@@ -29,6 +29,7 @@ public slots:
     void delEmp(const std::string&);
     void promoEmp(const std::string&);
     void updateInfEmp(const std::string&);
+    void resetVacFromEmp(const std::string&);
     void orderBy(const QString&);
     void calcFullSal(std::vector<std::pair<int, int>>);
     void reset();

@@ -1,6 +1,7 @@
 #include <QApplication>
 
 #include <iostream>
+#include <QDesktopWidget>
 #include "src/model/headers/director.h"
 #include "src/model/headers/ftemployee.h"
 #include "src/model/headers/ptemployee.h"
@@ -325,7 +326,8 @@ int main(int argc, char *argv[])
     QSalaries* view = new QSalaries(nullptr, controller);
     controller->addView(view);
 
+    view->adjustSize();
+    view->move(QApplication::desktop()->screen()->rect().center() - (*view).rect().center());
     (*view).show();
-
     return a.exec();
 }

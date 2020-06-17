@@ -6,15 +6,15 @@ QString QEmployeeInfo::cf_placeholder = "Cod. fisc: ";
 QString QEmployeeInfo::contract_placeholder = "Tipo di contratto: ";
 QString QEmployeeInfo::wdays_placeholder = "Giorni lavorati: ";
 QString QEmployeeInfo::whours_placeholder = "Ore lavorate: ";
-QString QEmployeeInfo::base_salary_placeholder = "Stipendio base: ";
-QString QEmployeeInfo::bonus_salary_placeholder = "Stipendio bonus: ";
-QString QEmployeeInfo::salary_placeholder = "Stipendio totale: ";
+QString QEmployeeInfo::base_salary_placeholder = "Stipendio base (€): ";
+QString QEmployeeInfo::bonus_salary_placeholder = "Stipendio bonus (€): ";
+QString QEmployeeInfo::salary_placeholder = "Stipendio totale (€): ";
 QString QEmployeeInfo::vac_placeholder = "Giorni feriali accumulati: ";
-QString QEmployeeInfo::seniority_placeholder = "Anzianita': ";
+QString QEmployeeInfo::seniority_placeholder = "Anzianita' (mesi): ";
 
 QEmployeeInfo::QEmployeeInfo(QWidget *parent) : QWidget(parent) {
     emp_info_layout = new QGridLayout(this);
-    emp_info_layout->setAlignment(Qt::AlignCenter);
+    emp_info_layout->setAlignment(Qt::AlignTop);
 
     QLabel* n = new QLabel(this);
     QLabel* sn = new QLabel(this);
@@ -89,6 +89,7 @@ QEmployeeInfo::QEmployeeInfo(QWidget *parent) : QWidget(parent) {
     emp_info_layout->addWidget(salary, 8, 1);
     emp_info_layout->addWidget(vac, 9, 1);
     emp_info_layout->addWidget(seniority, 10, 1);
+
 }
 
 void QEmployeeInfo::updateInfo(const std::string& nn, const std::string& ssn, const std::string& ccf,
@@ -106,4 +107,8 @@ void QEmployeeInfo::updateInfo(const std::string& nn, const std::string& ssn, co
     this->salary->setText(QString::fromStdString(ss));
     this->vac->setText(QString::fromStdString(vac));
     this->seniority->setText(QString::fromStdString(ssen));
+}
+
+std::string QEmployeeInfo::getCurrentDisplayedWorker() {
+    return this->cf->text().toStdString();
 }

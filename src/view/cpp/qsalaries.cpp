@@ -21,12 +21,13 @@ QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent)
     calc_full_sal = new QPushButton(tr("Calcola stipendi del mese"), this);
     order = new QComboBox(this);
 
+
     connect(add, SIGNAL(clicked()), this, SLOT(showAddDialog()));
     connect(del, SIGNAL(clicked()), this, SLOT(showDelDialog()));
     connect(promote, SIGNAL(clicked()), this, SLOT(showPromoDialog()));
     connect(list, SIGNAL(emitInfoRequest(const std::string&)), controller, SLOT(updateInfEmp(const std::string&)));
+    connect(list, SIGNAL(emitResVac(const std::string&)), controller, SLOT(resetVacFromEmp(const std::string&)));
     connect(calc_full_sal, SIGNAL(clicked()), this, SLOT(showCalcFullSalDialog()));
-
 
     // assemblo la menu bar
     QMenu* edit_menu = new QMenu("File", menu_bar);
@@ -35,10 +36,8 @@ QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent)
     QAction* load = new QAction("Carica", edit_menu);
     QAction* exit = new QAction("Esci", edit_menu);
 
-    QMenu* about = new QMenu("Others", menu_bar);
+    QMenu* about = new QMenu("Altro", menu_bar);
     QAction* dev_info = new QAction("About", about);
-
-
 
     edit_menu->addAction(new_pr);
     edit_menu->addAction(save);
@@ -50,6 +49,7 @@ QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent)
 
     connect(new_pr, SIGNAL(triggered()), controller, SLOT(reset()));
     connect(exit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(dev_info, SIGNAL(triggered()), this, SLOT(showAbout()));
 
     // assemblo la scroll area
     scroll->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy(2));
@@ -75,60 +75,87 @@ QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent)
     connect(order, SIGNAL(activated(const QString&)), controller, SLOT(orderBy(const QString&)));
 
     // assemblo i bottoni nel loro layout e definiscio le posizioni
+    buttons_layout->addSpacing(25);
     buttons_layout->addWidget(add);
     buttons_layout->addWidget(del);
     buttons_layout->addWidget(promote);
     buttons_layout->addWidget(order);
     buttons_layout->addWidget(calc_full_sal);
+    buttons_layout->addSpacing(25);
 
     // creo il layout verticale per i due widget "statici"
     QVBoxLayout* stats_layout = new QVBoxLayout(this);
+    stats_layout->setAlignment(Qt::AlignLeft);
     stats_layout->addWidget(emp_info);
+    stats_layout->addSpacing(50);
     stats_layout->addWidget(payroll_info);
 
     // assemblo i layout in modo che siano ordinati correttamente
     main_layout->addWidget(menu_bar);
+    main_layout->addSpacing(25);
+
+    widgets_layout->addSpacing(25);
     widgets_layout->addWidget(scroll);
+    widgets_layout->addSpacing(50);
     widgets_layout->addLayout(stats_layout);
+    widgets_layout->addSpacing(25);
+
     main_layout->addLayout(widgets_layout);
+    main_layout->addSpacing(25);
     main_layout->addLayout(buttons_layout);
+    main_layout->addSpacing(25);
+
     buttons_layout->setAlignment(Qt::AlignLeft);
     window_layout->addLayout(main_layout);
+
+    this->setFixedSize(1000, 800);
 }
 
 void QSalaries::showAddDialog() {
     QDialog* dialog = new QDialog(this);
+    QVBoxLayout* l = new QVBoxLayout(dialog);
     QAddDialog* addDialog = new QAddDialog(dialog);
 
     connect(addDialog, SIGNAL(emitAdd(const std::string&, const std::string&, const std::string&, const std::string&)),
             controller, SLOT(addEmp(const std::string&, const std::string&, const std::string&, const std::string&)));
 
-    dialog->setFixedSize(QSize(230, 150));
+    l->addWidget(addDialog);
+    dialog->setLayout(l);
+    dialog->setFixedSize(dialog->sizeHint());
+
     dialog->setModal(true);
     dialog->show();
 }
 
 void QSalaries::showDelDialog() {
     QDialog* dialog = new QDialog(this);
+    QVBoxLayout* l = new QVBoxLayout(dialog);
     QDelDialog* delDialog = new QDelDialog(dialog);
 
     connect(delDialog, SIGNAL(emitDel(const std::string&)),
             controller, SLOT(delEmp(const std::string&)));
 
-    dialog->setFixedSize(QSize(340, 90));
+    l->addWidget(delDialog);
+    dialog->setLayout(l);
+    dialog->setFixedSize(dialog->sizeHint());
     dialog->setModal(true);
     dialog->show();
 }
 
 void QSalaries::showPromoDialog() {
     QDialog* dialog = new QDialog(this);
-    QPromoDialog* delDialog = new QPromoDialog(dialog);
+    QVBoxLayout* l = new QVBoxLayout(dialog);
+    QPromoDialog* promoDialog = new QPromoDialog(dialog);
 
 
-    connect(delDialog, SIGNAL(emitPromo(const std::string&)),
+    connect(promoDialog, SIGNAL(emitPromo(const std::string&)),
             controller, SLOT(promoEmp(const std::string&)));
 
-    dialog->setFixedSize(QSize(350, 90));
+    //dialog->setFixedSize(QSize(350, 90));
+
+    l->addWidget(promoDialog);
+    dialog->setLayout(l);
+    dialog->setFixedSize(dialog->sizeHint());
     dialog->setModal(true);
     dialog->show();
 }
@@ -148,9 +175,19 @@ void QSalaries::showCalcFullSalDialog() {
     scroll_calc->resize(430, 480);
 
     connect(calcFullSalDialog, SIGNAL(emitCalcFullSal(std::vector<std::pair<int, int>>)), controller, SLOT(calcFullSal(std::vector<std::pair<int, int>>)));
-    dialog->setFixedSize(QSize(430, 480));
+    connect(calcFullSalDialog, SIGNAL(emitCalcFullSal(std::vector<std::pair<int, int>>)), dialog, SLOT(close()));
     dialog->setModal(true);
     dialog->show();
+}
+
+void QSalaries::showAbout() {
+    QMessageBox box(QMessageBox::Information, "Info",
+                    QString("Università degli studi di Padova<br>"
+                            "Facoltà di Informatica<br>"
+                            "A.A. 2019/2020<br><br>"
+                            "Progetto svolto per il corso di <b>Programmazione ad Oggetti</b><br>"
+                            "da <u>Barbieri Veronica</u> e <u>Bulbarelli Giacomo</u>"), QMessageBox::Ok, this);
+    box.exec();
 }
 
 void QSalaries::updateList() {
@@ -166,14 +203,19 @@ void QSalaries::updateInfoField(const std::string& nn, const std::string& ssn, c
 }
 
 void QSalaries::updatePayrollInfo(const std::string & s, const std::string & bs, const std::string & wh,
-                                  const std::string & hs, const std::string & hwh, const std::string & sen) {
-    payroll_info->updateInfo(s, bs, wh, hs, hwh, sen);
+                                  const std::string & hs, const std::string & hwh, const std::string & sen,
+                                  const std::string & ddf, const std::string & ddh) {
+    payroll_info->updateInfo(s, bs, wh, hs, hwh, sen, ddf, ddh);
 }
 
 void QSalaries::clearView() {
     this->clearList();
     this->updateInfoField("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
-    this->updatePayrollInfo("N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+    this->updatePayrollInfo("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+}
+
+std::string QSalaries::currentDisplayedWorker() {
+    return this->emp_info->getCurrentDisplayedWorker();
 }
 
 void QSalaries::addEmpToList(const std::string& n, const std::string& sn, const std::string& cf, const std::string& con) {

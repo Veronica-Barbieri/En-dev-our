@@ -16,17 +16,22 @@ private:
     static QString highest_sal_placeholder;
     static QString highest_w_hours_placeholder;
     static QString sen_placeholder;
+    static QString diff_hours_placeholder;
+    static QString diff_sal_placeholder;
     QLabel* sal;
     QLabel* bonus_sal;
     QLabel* highest_sal;
     QLabel* w_hours;
     QLabel* highest_w_hours;
     QLabel* sen;
+    QLabel* diff_sal;
+    QLabel* diff_hours;
 
 public:
     explicit QPayrollInfo(QWidget *parent = nullptr);
     void updateInfo(const std::string&, const std::string&, const std::string&,
-                    const std::string&, const std::string&, const std::string&);
+                    const std::string&, const std::string&, const std::string&,
+                    const std::string&, const std::string&);
 signals:
 
 public slots:

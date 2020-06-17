@@ -18,6 +18,8 @@ private:
     int tot_worked_hours;
     int highest_worked_hours;
     double highest_seniority;
+    double diff_hours;
+    double diff_sal;
 
     std::string findDirCodFisc() const; // Dir == director    cout << n << " " << sn << " " << ccf << " " << con << endl;
 
@@ -44,6 +46,9 @@ public:
 
     void calcAllFullSal();
     void calcAllFullSal(std::vector<std::pair<int, int>>);
+
+    double getDiffHours() const;
+    double getDiffSal() const;
 
     void promotePtEmp(const std::string&);
     void promotePtEmp(worker*);

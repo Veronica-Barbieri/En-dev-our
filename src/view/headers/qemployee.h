@@ -25,8 +25,10 @@ public:
 
 signals:
     void emitInfoChange(const std::string&);
+    void emitResetVac(const std::string&);
 
 public slots:
     void slotInfoChange();
+    void slotResetVac();
 };
 #endif // WIDGET_H

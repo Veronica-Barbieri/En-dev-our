@@ -1,6 +1,6 @@
 #include "paycheck.h"
 
-paycheck::paycheck(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0),  highest_sal(0), tot_worked_hours(0), highest_worked_hours(0), highest_seniority(0) {}
+paycheck::paycheck(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0),  highest_sal(0), tot_worked_hours(0), highest_worked_hours(0), highest_seniority(0), diff_hours(0), diff_sal(0) {}
 
 paycheck::~paycheck() {}
 
@@ -137,6 +137,8 @@ void paycheck::remEmp(worker* w) {
 void paycheck::calcAllFullSal() {
     int wd;
     int wh;
+    double curr_worked_hours = tot_worked_hours;
+    double curr_sal = tot_salaries;
     this->resetPaycheckData();
 
     for(int count=0; count < pc.getSize(); count++){
@@ -150,6 +152,9 @@ void paycheck::calcAllFullSal() {
         this->updateTotWorkedHours(pc[count]->getLastMonthWorkedHours());
     }
 
+    diff_hours = tot_worked_hours - curr_worked_hours;
+    diff_sal = curr_sal - tot_salaries;
+
     this->updateHighestSal();
     this->updateHighestWorkedHours();
     this->updateHighestSeniority();
@@ -159,6 +164,8 @@ void paycheck::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
     int wd;
     int wh;
     int s_count = 0;
+    double curr_worked_hours = tot_worked_hours;
+    double curr_sal = tot_salaries;
     this->resetPaycheckData();
 
     for(std::vector<std::pair<int, int>>::const_iterator it = collection.begin(); it != collection.end(); it++){
@@ -171,9 +178,20 @@ void paycheck::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
         s_count++;
     }
 
+    diff_hours = tot_worked_hours - curr_worked_hours;
+    diff_sal = curr_sal - tot_salaries;
+
     this->updateHighestSal();
     this->updateHighestWorkedHours();
     this->updateHighestSeniority();
+}
+
+double paycheck::getDiffHours() const {
+    return this->diff_hours;
+}
+
+double paycheck::getDiffSal() const {
+    return this->diff_sal;
 }
 
 void paycheck::promotePtEmp(const std::string& cf) {

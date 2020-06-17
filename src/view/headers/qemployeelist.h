@@ -22,10 +22,12 @@ public:
 
 signals:
     void emitInfoRequest(const std::string&);
+    void emitResVac(const std::string&);
 
 public slots:
     void addEmp(const std::string&, const std::string&, const std::string&, const std::string&);
     void receiveInfoReq(const std::string&);
+    void receiveResVac(const std::string&);
     void delEmp();
     void clearList();
 

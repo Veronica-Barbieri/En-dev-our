@@ -9,6 +9,7 @@ void QEmployeeList::addEmp(const std::string& n, const std::string& sn, const st
     QEmployee* e = new QEmployee();
     e->updateInfo(n, sn, cf, con);
     connect(e, SIGNAL(emitInfoChange(const std::string&)), this, SLOT(receiveInfoReq(const std::string&)));
+    connect(e, SIGNAL(emitResetVac(const std::string&)), this, SLOT(receiveResVac(const std::string&)));
     qemp_cont.push_back(e);
     list_layout->addWidget(e);
 }
@@ -29,4 +30,8 @@ void QEmployeeList::clearList() {
 
 void QEmployeeList::receiveInfoReq(const std::string& ccf) {
     emit emitInfoRequest(ccf);
+}
+
+void QEmployeeList::receiveResVac(const std::string& ccf) {
+    emit emitResVac(ccf);
 }

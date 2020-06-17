@@ -72,6 +72,15 @@ void QtSalariesController::updateInfEmp(const std::string& cf) {
                           vac, sen);
 }
 
+void QtSalariesController::resetVacFromEmp(const std::string& cf) {
+    worker* aux = model->retrieveWorkerFromCf(cf);
+
+    aux->resetVacAcc();
+    if(view->currentDisplayedWorker() == cf) {
+        updateInfEmp(cf);
+    }
+}
+
 void QtSalariesController::orderBy(const QString& option) {
     std::string tmp = option.toStdString();
     if(tmp == "Ordina per ruolo"){
@@ -126,13 +135,15 @@ void QtSalariesController::calcFullSal(std::vector<std::pair<int, int>> stats) {
     //update view
     std::string s = std::to_string(model->getTotSal());
     std::string bs = std::to_string(model->getTotBuonusSal());
-    std::string wh = std::to_string(model->getHighestSal());
-    std::string hs = std::to_string(model->getTotWorkedHours());
+    std::string wh = std::to_string(model->getHighestWorkedHours());
+    std::string hs = std::to_string(model->getHighestSal());
     std::string hwh = std::to_string(model->getHighestWorkedHours());
     std::string sen = std::to_string(model->getHighestSeniority());
+    std::string ds = std::to_string(model->getDiffSal());
+    std::string dh = std::to_string(model->getDiffHours());
 
     view->updatePayrollInfo(s, bs, wh,
-                            hs, hwh, sen);
+                            hs, hwh, sen, ds, dh);
     view->updateInfoField("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
 
 }

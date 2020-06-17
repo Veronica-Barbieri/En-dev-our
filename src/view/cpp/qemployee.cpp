@@ -6,14 +6,24 @@ QString QEmployee::cf_placeholder = "Cod. Fiscale: ";
 QString QEmployee::contract_placeholder = "Tipo di contratto: ";
 
 QEmployee::QEmployee(QWidget *parent): QWidget(parent) {
-    info_layout = new QGridLayout(this);
+    QVBoxLayout* main = new QVBoxLayout(this);
+    QHBoxLayout* btn = new QHBoxLayout();
+    info_layout = new QGridLayout();
     info_layout->setSizeConstraint(QLayout::SizeConstraint(3));
 
     QLabel* name_tag = new QLabel(this);
     QLabel* sname_tag = new QLabel(this);
     QLabel* cf_tag = new QLabel(this);
     QLabel* contract_tag = new QLabel(this);
+
+    QPalette pal = palette();
+    pal.setColor(QPalette::Background, Qt::lightGray);
+
     QPushButton* info = new QPushButton(tr("Info"), this);
+    QPushButton* reset_vac = new QPushButton(tr("Reset ferie"), this);
+
+    btn->addWidget(info);
+    btn->addWidget(reset_vac);
 
     name = new QLabel(this);
     sname = new QLabel(this);
@@ -33,6 +43,7 @@ QEmployee::QEmployee(QWidget *parent): QWidget(parent) {
     this->updateInfo("N/A", "N/A", "N/A", "N/A");
 
     connect(info, SIGNAL(clicked()), this, SLOT(slotInfoChange()));
+    connect(reset_vac, SIGNAL(clicked()), this, SLOT(slotResetVac()));
 
     info_layout->addWidget(name_tag, 0, 0);
     info_layout->addWidget(sname_tag, 1, 0);
@@ -45,6 +56,10 @@ QEmployee::QEmployee(QWidget *parent): QWidget(parent) {
     info_layout->addWidget(cf, 2, 1);
     info_layout->addWidget(contract, 3, 1);
 
+    main->addLayout(info_layout);
+    main->addLayout(btn);
+    this->setAutoFillBackground(true);
+    this->setPalette(pal);
 }
 
 void QEmployee::updateInfo(const std::string& n, const std::string& sn, const std::string& ccf, const std::string& con) {
@@ -58,4 +73,9 @@ void QEmployee::slotInfoChange() {
     std::string ccf = cf->text().toStdString();
 
     emit emitInfoChange(ccf);
+}
+
+void QEmployee::slotResetVac() {
+    std::string ccf = cf->text().toStdString();
+    emit emitResetVac(ccf);
 }

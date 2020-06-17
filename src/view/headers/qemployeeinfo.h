@@ -38,6 +38,7 @@ public:
                     const std::string&, const std::string&, const std::string&,
                     const std::string&, const std::string&, const std::string&,
                     const std::string&, const std::string&);
+    std::string getCurrentDisplayedWorker();
 };
 
 #endif // QEMPLOYEEINFO_H
