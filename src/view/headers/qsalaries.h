@@ -52,6 +52,9 @@ public:
                            const std::string&, const std::string&, const std::string&);
     void clearView();
 
+    void buildPayrollFromFile(QString fileName);
+    QJsonDocument writeToFile();
+
 
 signals:
     void applyAdd(const std::string&, const std::string&, const std::string&, const std::string&);
@@ -64,6 +67,8 @@ public slots:
     void showDelDialog();
     void showPromoDialog();
     void showCalcFullSalDialog();
+    void showFileDialog();
+    void showWriteFileDialog();
     void showErrorDialog(const std::string&);
 };
 

@@ -3,6 +3,8 @@
 worker::worker() {};
 
 worker::worker(std::string n, std::string sn, std::string cf): name(n), sname(sn), cod_fiscale(cf), last_month_worked_days(0), last_month_worked_hours(0), last_month_base_salary(0), last_month_bonus_salary(0), last_month_salary(0), seniority(0), vac_acc(0) {}
+worker::worker(std::string n, std::string sn, std::string cf, int wd, int wh, double base, double bonus, double salary, int sen, int hol)
+    : name(n), sname(sn), cod_fiscale(cf), last_month_worked_days(wd), last_month_worked_hours(wh), last_month_base_salary(base), last_month_bonus_salary(bonus), last_month_salary(salary), seniority(sen), vac_acc(hol) {}
 
 worker::~worker() {};
 
@@ -87,6 +89,10 @@ void worker::updateSeniority(){
     this->seniority += 1;
 }
 
+void worker::resetSeniority() {
+    this->seniority = 0;
+}
+
 int worker::getVacAcc() const {
     return this->vac_acc;
 }
@@ -102,4 +108,13 @@ void worker::resetVacAcc() {
 void worker::updateWorkData(const int& wd, const int& wh) {
     this->setLastMonthWorkedDays(wd);
     this->setLastMonthWorkedHours(wh);
+}
+
+void worker::setWorkData(const int& wd, const int& wh, const double& base, const double& bonus, const double& salary, const int& sen, const int& hol){
+    updateWorkData(wd,wh);
+    last_month_base_salary = base;
+    last_month_bonus_salary = bonus;
+    last_month_salary = salary;
+    seniority = sen;
+    vac_acc = hol;
 }

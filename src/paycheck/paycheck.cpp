@@ -2,6 +2,8 @@
 #include <exception>
 
 paycheck::paycheck(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0),  highest_sal(0), tot_worked_hours(0), highest_worked_hours(0), highest_seniority(0) {}
+paycheck::paycheck(const Container<worker*>& c, const double& s, const double& b, const double& hs, const int& wh, const int& hwh, const double& hsen)
+    : pc(c), tot_salaries(s), tot_bonus_salaries(b), highest_sal(hs), tot_worked_hours(wh), highest_worked_hours(hwh), highest_seniority(hsen) {}
 
 paycheck::~paycheck() {}
 
@@ -61,6 +63,24 @@ Container<worker *> paycheck::getWorkers() const {
 
 void paycheck::resetPaycheck() {
     pc.clear();
+    tot_salaries = 0;
+    tot_bonus_salaries = 0;
+    highest_sal = 0;
+    tot_worked_hours = 0;
+    highest_worked_hours = 0;
+    highest_seniority = 0;
+}
+
+void paycheck::resetLastMonthPaycheck() {
+    for(int i=0; i<pc.getSize(); ++i){
+        worker* aux = pc.getNodoFromIndex(i)->info;
+        aux->updateWorkData(0,0);
+        aux->setLastMonthBaseSalary(0);
+        aux->setLastMonthBonusSalary(0);
+        aux->setLastMonthSalary(0);
+        aux->resetVacAcc();
+        aux->resetSeniority();
+    }
     tot_salaries = 0;
     tot_bonus_salaries = 0;
     highest_sal = 0;
@@ -158,7 +178,7 @@ void paycheck::remEmp(worker* w) {
     return;
 }
 
-void paycheck::calcAllFullSal() {
+void paycheck::calcAllFullSal() { //to remove?
     int wd;
     int wh;
     this->resetPaycheckData();
@@ -188,7 +208,9 @@ void paycheck::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
     for(std::vector<std::pair<int, int>>::const_iterator it = collection.begin(); it != collection.end(); it++){
         wd = it->first;
         wh = it->second;
-        pc[s_count]->calcFullSal(wd, wh);
+        if(pc[s_count]->calcFullSal(wd, wh) < 0){
+            throw std::domain_error("Something went wrong dati errati");
+        }
         this->updateTotSalaries(pc[s_count]->getLastMonthSalary());
         this->updateTotBonusSalaries(pc[s_count]->getLastMonthBonusSalary());
         this->updateTotWorkedHours(pc[s_count]->getLastMonthWorkedHours());

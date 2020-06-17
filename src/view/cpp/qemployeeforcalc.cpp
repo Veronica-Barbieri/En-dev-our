@@ -19,6 +19,10 @@ QEmployeeForCalc::QEmployeeForCalc(QWidget *parent, const std::string& n, const 
     wd = new QLineEdit(this);
     wh = new QLineEdit(this);
 
+    connect(wd, SIGNAL(editingFinished()), this, SLOT(bothFilled()));
+    connect(wh, SIGNAL(editingFinished()), this, SLOT(bothFilled()));
+    connect(this, SIGNAL(isFilled()), this->parentWidget(), SLOT(checkFilled()));
+
     main->setAlignment(Qt::AlignTop);
 
     main->addLayout(for_labels);
@@ -34,4 +38,8 @@ int QEmployeeForCalc::getWHoursContent() {
     return wh->text().toInt();
 }
 
-
+void QEmployeeForCalc::bothFilled() {
+    if(wd->text() != "" && wh->text() != ""){
+        emit QEmployeeForCalc::isFilled();
+    }
+}

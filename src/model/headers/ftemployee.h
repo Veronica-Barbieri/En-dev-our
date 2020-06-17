@@ -10,6 +10,7 @@ private:
 public:
     ftemployee();
     ftemployee(std::string, std::string, std::string);
+    ftemployee(std::string, std::string, std::string, int, int, double, double, double, int, int);
     ftemployee(const worker&);
 
     double getBaseBonusSalary() const;

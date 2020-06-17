@@ -2,6 +2,7 @@
 #define QTSALARIESCONTROLLER_H
 
 #include <QObject>
+#include <QFile>
 #include "../../paycheck/paycheck.h"
 #include "../../view/headers/qsalaries.h"
 
@@ -18,9 +19,13 @@ public:
     worker* getEmpAtIndex(int) const;
     int getNumberOfEmp() const;
     void addView(QSalaries*);
+    void updateModel(paycheck*);
     int modelSize() const;
     Container<worker*> getCurrCont();
     worker* operator[](const int&) const;
+
+    void getPayrollFromFile(QJsonObject root);
+    QJsonObject writePayrollToFile();
 
 signals:
     void showError(const std::string&);

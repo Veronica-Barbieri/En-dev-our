@@ -27,6 +27,7 @@ private:
 
 public:
     paycheck();
+    paycheck(const Container<worker*>&, const double&, const double&, const double&, const int&, const int&, const double&);
     ~paycheck();
 
     int getSize() const;
@@ -35,6 +36,7 @@ public:
     worker* getWorkerAtPos(const int&) const;
     Container<worker*> getWorkers() const;
     void resetPaycheck();
+    void resetLastMonthPaycheck();//reset dati mese
 
     void addEmp(const std::string&, const std::string&, const std::string&, const std::string&);
     void addEmp(worker*);

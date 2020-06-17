@@ -20,8 +20,10 @@ public:
     int getWHoursContent();
 
 signals:
+    void isFilled();
 
 public slots:
+    void bothFilled();
 };
 
 #endif // QEMPLOYEEFORCALC_H
