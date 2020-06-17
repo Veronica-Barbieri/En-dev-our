@@ -12,7 +12,13 @@ QEmployeeListForCalc::QEmployeeListForCalc(QWidget *parent, Container<worker*> c
         size++;
     }
 
+    confirm->setDisabled(true);
+
+    connect(confirm, SIGNAL(clicked()), this, SLOT(checkFilled()));
     connect(confirm, SIGNAL(clicked()), this, SLOT(collectData()));
+    connect(confirm, SIGNAL(clicked()), this->parentWidget(), SLOT(close())); //close window on confirm click
+    connect(this, SIGNAL(enableConfirm(bool)), confirm, SLOT(setEnabled(bool)));
+
     list->setAlignment(confirm, Qt::AlignBottom);
     list->addWidget(confirm);
 }
@@ -29,5 +35,24 @@ void QEmployeeListForCalc::collectData() {
         collection.push_back(stats);
     }
     emit emitCalcFullSal(collection);
+}
+
+bool QEmployeeListForCalc::isFilledOut(){
+    for(int i=0; i<size; i++){
+        QLayoutItem* aux = list->itemAt(i);
+        QEmployeeForCalc* emp_aux = static_cast<QEmployeeForCalc*>(aux->widget());
+        if(emp_aux->getWDaysContent() == 0 || emp_aux->getWHoursContent() == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+void QEmployeeListForCalc::checkFilled() {
+    if(isFilledOut()){
+        emit QEmployeeListForCalc::enableConfirm(true);
+    }else {
+        emit QEmployeeListForCalc::enableConfirm(false);
+    }
 }
 

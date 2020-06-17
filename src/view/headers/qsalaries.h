@@ -55,6 +55,9 @@ public:
     void clearView();
     std::string currentDisplayedWorker();
 
+    void buildPayrollFromFile(QString fileName);
+    QJsonDocument writeToFile();
+
 
 signals:
     void applyAdd(const std::string&, const std::string&, const std::string&, const std::string&);
@@ -68,6 +71,9 @@ public slots:
     void showPromoDialog();
     void showCalcFullSalDialog();
     void showAbout();
+    void showFileDialog();
+    void showWriteFileDialog();
+    void showErrorDialog(const std::string&);
 };
 
 #endif // QSALARIES_H

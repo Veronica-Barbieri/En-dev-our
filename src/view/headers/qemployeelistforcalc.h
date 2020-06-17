@@ -21,12 +21,15 @@ private:
 public:
     explicit QEmployeeListForCalc(QWidget* parent = nullptr, Container<worker*> c = Container<worker*>());
     void clearData();
+    bool isFilledOut();
 
 signals:
     void emitCalcFullSal(std::vector<std::pair<int, int>>);
+    void enableConfirm(const bool&);
 
 public slots:
     void collectData();
+    void checkFilled();
 };
 
 #endif // QEMPLOYEELISTFORCALC_H

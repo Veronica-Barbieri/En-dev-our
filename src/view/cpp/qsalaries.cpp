@@ -1,5 +1,15 @@
 #include "../headers/qsalaries.h"
 #include "../../controller/header/qtsalariescontroller.h"
+#include <QMessageBox>
+#include <string>
+#include <QFile>
+#include <QSaveFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QTextStream>
+#include <QString>
+ #include <QFileDialog>
 
 QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent), controller(c) {
     QVBoxLayout* window_layout = new QVBoxLayout(this);
@@ -47,6 +57,8 @@ QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent)
     menu_bar->addMenu(edit_menu);
     menu_bar->addMenu(about);
 
+    connect(save, SIGNAL(triggered()), this, SLOT(showWriteFileDialog()));
+    connect(load, SIGNAL(triggered()), this, SLOT(showFileDialog()));
     connect(new_pr, SIGNAL(triggered()), controller, SLOT(reset()));
     connect(exit, SIGNAL(triggered()), this, SLOT(close()));
     connect(dev_info, SIGNAL(triggered()), this, SLOT(showAbout()));
@@ -109,6 +121,7 @@ QSalaries::QSalaries(QWidget *parent, QtSalariesController* c) : QWidget(parent)
     window_layout->addLayout(main_layout);
 
     this->setFixedSize(1000, 800);
+    connect(controller, SIGNAL(showError(std::string)), this, SLOT(showErrorDialog(std::string)));
 }
 
 void QSalaries::showAddDialog() {
@@ -161,10 +174,12 @@ void QSalaries::showPromoDialog() {
 }
 
 void QSalaries::showCalcFullSalDialog() {
+    Container<worker*> curr_workers = controller->getCurrCont();
+
+    if(curr_workers.getSize() != 0){
+
     QDialog* dialog = new QDialog(this);
     QScrollArea* scroll_calc = new QScrollArea(dialog);
-
-    Container<worker*> curr_workers = controller->getCurrCont();
 
     QEmployeeListForCalc* calcFullSalDialog = new QEmployeeListForCalc(dialog, curr_workers);
 
@@ -178,6 +193,7 @@ void QSalaries::showCalcFullSalDialog() {
     connect(calcFullSalDialog, SIGNAL(emitCalcFullSal(std::vector<std::pair<int, int>>)), dialog, SLOT(close()));
     dialog->setModal(true);
     dialog->show();
+    }
 }
 
 void QSalaries::showAbout() {
@@ -204,8 +220,8 @@ void QSalaries::updateInfoField(const std::string& nn, const std::string& ssn, c
 
 void QSalaries::updatePayrollInfo(const std::string & s, const std::string & bs, const std::string & wh,
                                   const std::string & hs, const std::string & hwh, const std::string & sen,
-                                  const std::string & ddf, const std::string & ddh) {
-    payroll_info->updateInfo(s, bs, wh, hs, hwh, sen, ddf, ddh);
+                                  const std::string & dds, const std::string & ddh) {
+    payroll_info->updateInfo(s, bs, wh, hs, hwh, sen, dds, ddh);
 }
 
 void QSalaries::clearView() {
@@ -245,4 +261,78 @@ void QSalaries::fillList() {
         }
         addEmpToList(curr_emp->getName(), curr_emp->getSname(), curr_emp->getCodFiscale(), contr);
     }
+}
+
+void QSalaries::showErrorDialog(const std::string& err) {
+    QMessageBox* err_dialog = new QMessageBox(this);
+    err_dialog->setText(QString::fromStdString(err));
+
+    err_dialog->setFixedSize(QSize(230, 150));
+    err_dialog->setModal(true);
+    err_dialog->show();
+}
+
+void QSalaries::showFileDialog() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "/home", tr("Json Files (*.json)"));
+    //QFileDialog* files = new QFileDialog(this);
+    //files->show();
+    if (!fileName.isEmpty()) buildPayrollFromFile(fileName);
+}
+
+void QSalaries::buildPayrollFromFile(QString fileName){
+    Container<worker*> cont; //empty container
+    worker* w;
+    paycheck* temp_payroll; //empty payroll
+
+    QFile file(fileName); //open file
+    if(!file.open(QIODevice::ReadOnly)){
+        std::cout<<"Failed to open ";
+        exit(1);
+    }
+
+    //read all from file and close
+    QTextStream file_text(&file);
+    QString json_string;
+    json_string = file_text.readAll();
+    file.close();
+    QByteArray json_bytes = json_string.toLocal8Bit();
+     QJsonDocument list;
+    try {
+        list = QJsonDocument::fromJson(json_bytes);
+        if(list.isEmpty()){
+            throw std::logic_error("Formato json errato, correggere e riprovare");
+        }
+    } catch (std::logic_error e) {
+        emit showErrorDialog(e.what());
+    }
+    QJsonObject root = list.object();
+    controller->getPayrollFromFile(root);
+}
+
+//slot apre dialogo per salvataggio
+void QSalaries::showWriteFileDialog() {
+    QJsonDocument towrite = writeToFile();
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save payroll"),  "/home", tr("Json Files (*.json)"));
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        std::cout<<"Failed to open ";
+        exit(1);
+    }
+
+    file.write(towrite.toJson());
+    file.close();
+}
+
+QJsonDocument QSalaries::writeToFile() {
+    /*QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        std::cout<<"Failed to open ";
+        exit(1);
+    }*/
+    QJsonObject towrite = controller->writePayrollToFile();
+    QJsonDocument saveFile(towrite);
+    return saveFile;
 }
