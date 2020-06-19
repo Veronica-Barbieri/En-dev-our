@@ -21,7 +21,22 @@ using std::cin;
 
 int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
+    paycheck* model = new paycheck();
+    QtSalariesController* controller = new QtSalariesController(model);
+    QSalaries* view = new QSalaries(nullptr, controller);
+    controller->addView(view);
+
+    view->adjustSize();
+    view->move(QApplication::desktop()->screen()->rect().center() - (*view).rect().center());
+    (*view).show();
+
+
+    return a.exec();
+
 /*
+    cout<<"TEST MODEL:"<<endl;
     cout<<"TEST WORKER E CONTRACT:"<<endl;
     cout<<"-----------------------"<<endl<<endl;
 
@@ -29,7 +44,7 @@ int main(int argc, char *argv[])
     worker* tony = new ftemployee("Tony", "Cartony", "TC1");
     worker* carla = new ftemployee("Carla", "Tegola", "CT2");
     worker* eolo = new ftemployee("Eolo", "Peolo", "EP9");
-    worker* mona = new ptemployee("Mona", "Poltrona", "GP1");
+    worker* mona = new ptemployee("Gino", "Poltrona", "GP1");
     worker* gianni = new ptemployee("Gianni", "Malanni", "GM4");
 
     gino->calcFullSal(24, 216); // ha alvorato 25 giorni per 9 ore ciascun giorno lavorativo
@@ -319,15 +334,4 @@ int main(int argc, char *argv[])
 
     */
 
-    QApplication a(argc, argv);
-
-    paycheck* model = new paycheck();
-    QtSalariesController* controller = new QtSalariesController(model);
-    QSalaries* view = new QSalaries(nullptr, controller);
-    controller->addView(view);
-
-    view->adjustSize();
-    view->move(QApplication::desktop()->screen()->rect().center() - (*view).rect().center());
-    (*view).show();
-    return a.exec();
 }

@@ -42,7 +42,7 @@ QEmployee::QEmployee(QWidget *parent): QWidget(parent) {
     cf_tag->setFont(QFont("Helvetica", 10, QFont::Bold));
     contract_tag->setFont(QFont("Helvetica", 10, QFont::Bold));
 
-    this->updateInfo("N/A", "N/A", "N/A", "N/A");
+    this->updateInfo();
 
     connect(info, SIGNAL(clicked()), this, SLOT(slotInfoChange()));
     connect(reset_vac, SIGNAL(clicked()), this, SLOT(slotResetVac()));

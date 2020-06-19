@@ -165,7 +165,7 @@ void QtSalariesController::calcFullSal(std::vector<std::pair<int, int>> stats) {
         std::string diffh = std::to_string(model->getDiffHours());
         view->updatePayrollInfo(s, bs, wh,
                                 hs, hwh, sen, diffs, diffh);
-        view->updateInfoField("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+        view->updateInfoField();
     } catch (std::domain_error e) {
         model->resetLastMonthPaycheck();
         emit showError(e.what());

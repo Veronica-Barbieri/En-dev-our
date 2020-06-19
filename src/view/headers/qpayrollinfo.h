@@ -29,9 +29,9 @@ private:
 
 public:
     explicit QPayrollInfo(QWidget *parent = nullptr);
-    void updateInfo(const std::string&, const std::string&, const std::string&,
-                    const std::string&, const std::string&, const std::string&,
-                    const std::string&, const std::string&);
+    void updateInfo(const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                    const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                    const std::string& = "N/A", const std::string& = "N/A");
 signals:
 
 public slots:

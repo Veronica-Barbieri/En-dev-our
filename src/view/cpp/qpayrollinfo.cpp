@@ -50,7 +50,7 @@ QPayrollInfo::QPayrollInfo(QWidget *parent) : QWidget(parent) {
     diff_h_tag->setFont(QFont("Helvetica", 10, QFont::Bold));
     diff_sal_tag->setFont(QFont("Helvetica", 10, QFont::Bold));
 
-    this->updateInfo("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+    this->updateInfo();
 
     p_info_layout->addWidget(sal_tag, 0, 0);
     p_info_layout->addWidget(bonus_sal_tag, 1, 0);

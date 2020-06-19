@@ -45,13 +45,13 @@ public:
 
     void addEmpToList(const std::string&, const std::string&, const std::string&, const std::string&);
     void addController(QtSalariesController* c);
-    void updateInfoField(const std::string&, const std::string&, const std::string&,
-                         const std::string&, const std::string&, const std::string&,
-                         const std::string&, const std::string&, const std::string&,
-                         const std::string&, const std::string&);
-    void updatePayrollInfo(const std::string&, const std::string&, const std::string&,
-                           const std::string&, const std::string&, const std::string&,
-                           const std::string&, const std::string&);
+    void updateInfoField(const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                         const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                         const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                         const std::string& = "N/A", const std::string& = "N/A");
+    void updatePayrollInfo(const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                           const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                           const std::string& = "N/A", const std::string& = "N/A");
     void clearView();
     std::string currentDisplayedWorker();
 

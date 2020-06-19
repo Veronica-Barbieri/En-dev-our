@@ -226,8 +226,8 @@ void QSalaries::updatePayrollInfo(const std::string & s, const std::string & bs,
 
 void QSalaries::clearView() {
     this->clearList();
-    this->updateInfoField("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
-    this->updatePayrollInfo("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+    this->updateInfoField();
+    this->updatePayrollInfo();
 }
 
 std::string QSalaries::currentDisplayedWorker() {
@@ -274,19 +274,14 @@ void QSalaries::showErrorDialog(const std::string& err) {
 
 void QSalaries::showFileDialog() {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "/home", tr("Json Files (*.json)"));
-    //QFileDialog* files = new QFileDialog(this);
-    //files->show();
     if (!fileName.isEmpty()) buildPayrollFromFile(fileName);
 }
 
 void QSalaries::buildPayrollFromFile(QString fileName){
-    Container<worker*> cont; //empty container
-    worker* w;
-    paycheck* temp_payroll; //empty payroll
 
     QFile file(fileName); //open file
     if(!file.open(QIODevice::ReadOnly)){
-        std::cout<<"Failed to open ";
+        showErrorDialog("Failed to write to file");
         exit(1);
     }
 
@@ -303,7 +298,7 @@ void QSalaries::buildPayrollFromFile(QString fileName){
             throw std::logic_error("Formato json errato, correggere e riprovare");
         }
     } catch (std::logic_error e) {
-        emit showErrorDialog(e.what());
+        showErrorDialog(e.what());
     }
     QJsonObject root = list.object();
     controller->getPayrollFromFile(root);
@@ -314,24 +309,21 @@ void QSalaries::showWriteFileDialog() {
     QJsonDocument towrite = writeToFile();
 
     QString fileName = QFileDialog::getSaveFileName(this,
-            tr("Save payroll"),  "/home", tr("Json Files (*.json)"));
-
+            tr("Save payroll"),  "/home/payroll.json", tr("Json Files (*.json)"));
+    if(fileName != ""){
+        //throw std::logic_error("Nessun nome di file specificato! Operazione annullata");
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
-        std::cout<<"Failed to open ";
+        showErrorDialog("Failed to write to file");
         exit(1);
     }
 
     file.write(towrite.toJson());
     file.close();
+    }
 }
 
 QJsonDocument QSalaries::writeToFile() {
-    /*QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly)) {
-        std::cout<<"Failed to open ";
-        exit(1);
-    }*/
     QJsonObject towrite = controller->writePayrollToFile();
     QJsonDocument saveFile(towrite);
     return saveFile;

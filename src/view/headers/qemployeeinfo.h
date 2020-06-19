@@ -34,10 +34,10 @@ private:
 
 public:
     explicit QEmployeeInfo(QWidget *parent = nullptr);
-    void updateInfo(const std::string&, const std::string&, const std::string&,
-                    const std::string&, const std::string&, const std::string&,
-                    const std::string&, const std::string&, const std::string&,
-                    const std::string&, const std::string&);
+    void updateInfo(const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                    const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                    const std::string& = "N/A", const std::string& = "N/A", const std::string& = "N/A",
+                    const std::string& = "N/A", const std::string& = "N/A");
     std::string getCurrentDisplayedWorker();
 };
 

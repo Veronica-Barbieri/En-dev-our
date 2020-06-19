@@ -64,7 +64,7 @@ QEmployeeInfo::QEmployeeInfo(QWidget *parent) : QWidget(parent) {
     v->setFont(QFont("Helvetica", 10, QFont::Bold));
     sen->setFont(QFont("Helvetica", 10, QFont::Bold));
 
-    this->updateInfo("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+    this->updateInfo();
 
     emp_info_layout->addWidget(n, 0, 0);
     emp_info_layout->addWidget(sn, 1, 0);
