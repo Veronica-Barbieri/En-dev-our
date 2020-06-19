@@ -11,6 +11,8 @@ QEmployee::QEmployee(QWidget *parent): QWidget(parent) {
     info_layout = new QGridLayout();
     info_layout->setSizeConstraint(QLayout::SizeConstraint(3));
 
+    btn->setAlignment(Qt::AlignTop);
+
     QLabel* name_tag = new QLabel(this);
     QLabel* sname_tag = new QLabel(this);
     QLabel* cf_tag = new QLabel(this);
@@ -49,7 +51,6 @@ QEmployee::QEmployee(QWidget *parent): QWidget(parent) {
     info_layout->addWidget(sname_tag, 1, 0);
     info_layout->addWidget(cf_tag, 2, 0);
     info_layout->addWidget(contract_tag, 3, 0);
-    info_layout->addWidget(info, 4, 0);
 
     info_layout->addWidget(name, 0, 1);
     info_layout->addWidget(sname, 1, 1);
@@ -71,7 +72,6 @@ void QEmployee::updateInfo(const std::string& n, const std::string& sn, const st
 
 void QEmployee::slotInfoChange() {
     std::string ccf = cf->text().toStdString();
-
     emit emitInfoChange(ccf);
 }
 
