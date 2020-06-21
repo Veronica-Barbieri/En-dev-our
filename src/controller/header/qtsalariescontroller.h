@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QFile>
-#include "../../paycheck/payroll.h"
+#include "../../payroll/payroll.h"
 #include "../../view/headers/qsalaries.h"
 
 

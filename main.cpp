@@ -7,7 +7,7 @@
 #include "src/model/headers/ftemployee.h"
 #include "src/model/headers/ptemployee.h"
 #include "src/model/headers/container.h"
-#include "src/paycheck/payroll.h"
+#include "src/payroll/payroll.h"
 #include "src/view/headers/qemployee.h"
 #include "src/view/headers/qemployeelist.h"
 #include "src/view/headers/qemployeeinfo.h"
@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
 
     view->adjustSize();
     view->move(QApplication::desktop()->screen()->rect().center() - (*view).rect().center());
-
     (*view).show();
 
 
