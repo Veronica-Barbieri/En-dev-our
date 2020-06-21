@@ -1,0 +1,20 @@
+\babel@toc {nil}{}
+\contentsline {section}{\numberline {1}Introduzione: Idea di progetto}{1}% 
+\contentsline {section}{\numberline {2}Gerarchia di tipi}{1}% 
+\contentsline {subsection}{\numberline {2.1}Classi base}{1}% 
+\contentsline {subsubsection}{\numberline {2.1.1}Classe worker}{2}% 
+\contentsline {subsubsection}{\numberline {2.1.2}Classe contract}{2}% 
+\contentsline {subsection}{\numberline {2.2}Classi derivate di Contract}{2}% 
+\contentsline {subsection}{\numberline {2.3}Classi derivate da worker e contract}{3}% 
+\contentsline {section}{\numberline {3}Container}{4}% 
+\contentsline {section}{\numberline {4}Model / Classe Payroll}{4}% 
+\contentsline {subsection}{\numberline {4.1}Utilizzo del polimorfismo in dettaglio}{5}% 
+\contentsline {section}{\numberline {5}GUI}{5}% 
+\contentsline {subsection}{\numberline {5.1}Controller}{7}% 
+\contentsline {section}{\numberline {6}Formato I/O su file}{7}% 
+\contentsline {section}{\numberline {7}Exception handling}{7}% 
+\contentsline {section}{\numberline {8}Dati sullo sviluppo}{7}% 
+\contentsline {subsection}{\numberline {8.1}Tempo di lavoro}{7}% 
+\contentsline {subsection}{\numberline {8.2}Versioni software e istruzioni di installazione}{8}% 
+\contentsline {subsection}{\numberline {8.3}Suddivisione del lavoro progettuale}{8}% 
+\contentsline {section}{\numberline {9}Conclusioni}{8}% 

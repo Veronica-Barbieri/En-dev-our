@@ -9,7 +9,7 @@
 #include <vector>
 #include <utility>
 
-class paycheck {
+class payroll {
 private:
     Container<worker*> pc;
     double tot_salaries;
@@ -28,9 +28,9 @@ private:
     bool hasDirector() const;
 
 public:
-    paycheck();
-    paycheck(const Container<worker*>&, const double&, const double&, const double&, const int&, const int&, const double&, const double&, const double&);
-    ~paycheck();
+    payroll();
+    payroll(const Container<worker*>&, const double&, const double&, const double&, const int&, const int&, const double&, const double&, const double&);
+    ~payroll();
 
     int getSize() const;
     worker* getWorkerFromIndex(int) const;

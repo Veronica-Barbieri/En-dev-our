@@ -3,23 +3,23 @@
 
 #include <QObject>
 #include <QFile>
-#include "../../paycheck/paycheck.h"
+#include "../../paycheck/payroll.h"
 #include "../../view/headers/qsalaries.h"
 
 
 class QtSalariesController : public QObject {
     Q_OBJECT
 private:
-    paycheck* model;
+    payroll* model;
     QSalaries* view;
 
 public:
-    explicit QtSalariesController(paycheck*, QSalaries*, QObject *parent = nullptr);
-    explicit QtSalariesController(paycheck*, QObject *parent = nullptr);
+    explicit QtSalariesController(payroll*, QSalaries*, QObject *parent = nullptr);
+    explicit QtSalariesController(payroll*, QObject *parent = nullptr);
     worker* getEmpAtIndex(int) const;
     int getNumberOfEmp() const;
     void addView(QSalaries*);
-    void updateModel(paycheck*);
+    void updateModel(payroll*);
     int modelSize() const;
     Container<worker*> getCurrCont();
     worker* operator[](const int&) const;

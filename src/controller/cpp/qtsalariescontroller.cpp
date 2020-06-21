@@ -4,9 +4,9 @@
 #include <QJsonArray>
 #include <QFile>
 
-QtSalariesController::QtSalariesController(paycheck* m, QSalaries* v, QObject *parent) : QObject(parent), model(m), view(v) {}
+QtSalariesController::QtSalariesController(payroll* m, QSalaries* v, QObject *parent) : QObject(parent), model(m), view(v) {}
 
-QtSalariesController::QtSalariesController(paycheck* m, QObject* parent): QObject(parent), model(m), view(nullptr) {}
+QtSalariesController::QtSalariesController(payroll* m, QObject* parent): QObject(parent), model(m), view(nullptr) {}
 
 worker* QtSalariesController::getEmpAtIndex(int i) const{
     return model->getWorkerFromIndex(i);
@@ -178,7 +178,7 @@ void QtSalariesController::reset() {
     view->clearView();
 }
 
-void QtSalariesController::updateModel(paycheck* nm){
+void QtSalariesController::updateModel(payroll* nm){
     delete model;
     model = nm;
 }
@@ -186,7 +186,7 @@ void QtSalariesController::updateModel(paycheck* nm){
 void QtSalariesController::getPayrollFromFile(QJsonObject root){
     Container<worker*> cont; //empty container
     worker* w;
-    paycheck* temp_payroll; //empty payroll
+    payroll* temp_payroll; //empty payroll
 
     //read data
     double ts = root.value("tot_salari").toDouble();
@@ -237,7 +237,7 @@ void QtSalariesController::getPayrollFromFile(QJsonObject root){
     }
 
     reset(); //resets view and model
-    temp_payroll = new paycheck(cont, ts, tbs, hs, twh, hwh, hsen, diffs, diffh);
+    temp_payroll = new payroll(cont, ts, tbs, hs, twh, hwh, hsen, diffs, diffh);
     updateModel(temp_payroll);
     view->updateList();//updates view list
     view->updatePayrollInfo(QString::number(tbs).toStdString(),

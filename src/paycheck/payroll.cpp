@@ -1,41 +1,41 @@
-#include "paycheck.h"
+#include "payroll.h"
 #include <exception>
 
-paycheck::paycheck(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0),  highest_sal(0), tot_worked_hours(0), highest_worked_hours(0), highest_seniority(0), diff_hours(0), diff_sal(0) {}
-paycheck::paycheck(const Container<worker*>& c, const double& s, const double& b, const double& hs, const int& wh, const int& hwh, const double& hsen, const double& diffs, const double& diffh)
+payroll::payroll(): pc(Container<worker*>()), tot_salaries(0), tot_bonus_salaries(0),  highest_sal(0), tot_worked_hours(0), highest_worked_hours(0), highest_seniority(0), diff_hours(0), diff_sal(0) {}
+payroll::payroll(const Container<worker*>& c, const double& s, const double& b, const double& hs, const int& wh, const int& hwh, const double& hsen, const double& diffs, const double& diffh)
     : pc(c), tot_salaries(s), tot_bonus_salaries(b), highest_sal(hs), tot_worked_hours(wh), highest_worked_hours(hwh), highest_seniority(hsen), diff_hours(diffh), diff_sal(diffs) {}
 
-paycheck::~paycheck() {}
+payroll::~payroll() {}
 
-int paycheck::getSize() const{
+int payroll::getSize() const{
     return pc.getSize();
 }
 
-worker* paycheck::getWorkerFromIndex(int i) const {
+worker* payroll::getWorkerFromIndex(int i) const {
     return pc.getNodoFromIndex(i)->info;
 }
 
-void paycheck::updateTotSalaries(const double& up) {
+void payroll::updateTotSalaries(const double& up) {
     this->tot_salaries += up;
 }
 
-void paycheck::updateTotBonusSalaries(const double& up) {
+void payroll::updateTotBonusSalaries(const double& up) {
     this->tot_bonus_salaries += up;
 }
 
-void paycheck::updateTotWorkedHours(const int& up) {
+void payroll::updateTotWorkedHours(const int& up) {
     this->tot_worked_hours += up;
 }
 
-double paycheck::getTotSal() const {
+double payroll::getTotSal() const {
     return this->tot_salaries;
 }
 
-double paycheck::getTotBuonusSal() const {
+double payroll::getTotBuonusSal() const {
     return this->tot_bonus_salaries;
 }
 
-worker* paycheck::retrieveWorkerFromCf(const std::string& cf) const {
+worker* payroll::retrieveWorkerFromCf(const std::string& cf) const {
     bool found = false;
     worker* aux = nullptr;
     for(int count=0; count < pc.getSize(); ++count){
@@ -50,18 +50,18 @@ worker* paycheck::retrieveWorkerFromCf(const std::string& cf) const {
     return aux;
 }
 
-worker* paycheck::getWorkerAtPos(const int& i) const {
+worker* payroll::getWorkerAtPos(const int& i) const {
     return pc.getNodoFromIndex(i)->info;
 }
 
-Container<worker *> paycheck::getWorkers() const {
+Container<worker *> payroll::getWorkers() const {
     if(pc.getSize() == 0){
         throw std::domain_error("There are no workers in this payroll");
     }
     return pc;
 }
 
-void paycheck::resetPaycheck() {
+void payroll::resetPaycheck() {
     pc.clear();
     tot_salaries = 0;
     tot_bonus_salaries = 0;
@@ -71,7 +71,7 @@ void paycheck::resetPaycheck() {
     highest_seniority = 0;
 }
 
-void paycheck::resetLastMonthPaycheck() {
+void payroll::resetLastMonthPaycheck() {
     for(int i=0; i<pc.getSize(); ++i){
         worker* aux = pc.getNodoFromIndex(i)->info;
         aux->updateWorkData(0,0);
@@ -90,7 +90,7 @@ void paycheck::resetLastMonthPaycheck() {
 }
 
 
-bool paycheck::isPresent(const std::string& w) const {
+bool payroll::isPresent(const std::string& w) const {
     if(retrieveWorkerFromCf(w)==nullptr){
         return false;
     } else {
@@ -98,7 +98,7 @@ bool paycheck::isPresent(const std::string& w) const {
     }
 }
 
-bool paycheck::isPresent(worker* w) const {
+bool payroll::isPresent(worker* w) const {
     bool found=false;
     for(int count=0; count < pc.getSize(); ++count) {
         if(pc[count] == w){
@@ -109,12 +109,12 @@ bool paycheck::isPresent(worker* w) const {
     return found;
 }
 
-bool paycheck::hasDirector() const {
+bool payroll::hasDirector() const {
     bool found = isPresent(findDirCodFisc());
     return found;
 }
 
-void paycheck::addEmp(const std::string& n, const std::string& sn, const std::string& cf, const std::string& tc) {
+void payroll::addEmp(const std::string& n, const std::string& sn, const std::string& cf, const std::string& tc) {
     worker* aux;
 
     if(isPresent(cf)){
@@ -138,12 +138,12 @@ void paycheck::addEmp(const std::string& n, const std::string& sn, const std::st
     this->pc.pushBack(aux);
 }
 
-void paycheck::addEmp(worker* emp) {
+void payroll::addEmp(worker* emp) {
     this->pc.pushBack(emp);
 }
 
 
-void paycheck::remEmp(const std::string& n, const std::string& sn, const std::string& cf,  const std::string& tc) {
+void payroll::remEmp(const std::string& n, const std::string& sn, const std::string& cf,  const std::string& tc) {
     worker* aux;
 
     if(!isPresent(cf)){
@@ -167,7 +167,7 @@ void paycheck::remEmp(const std::string& n, const std::string& sn, const std::st
     this->pc.remove(pc.getNodoFromInfo(aux));
 }
 
-void paycheck::remEmp(worker* w) {
+void payroll::remEmp(worker* w) {
     if(!isPresent(w)){
         throw std::domain_error("No employee with that CF in this payroll");
     }
@@ -178,7 +178,7 @@ void paycheck::remEmp(worker* w) {
     return;
 }
 
-void paycheck::calcAllFullSal() { //to remove?
+void payroll::calcAllFullSal() { //to remove?
     int wd;
     int wh;
     double curr_worked_hours = tot_worked_hours;
@@ -204,7 +204,7 @@ void paycheck::calcAllFullSal() { //to remove?
     this->updateHighestSeniority();
 }
 
-void paycheck::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
+void payroll::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
     int wd;
     int wh;
     int s_count = 0;
@@ -232,15 +232,15 @@ void paycheck::calcAllFullSal(std::vector<std::pair<int, int>> collection) {
     this->updateHighestSeniority();
 }
 
-double paycheck::getDiffHours() const {
+double payroll::getDiffHours() const {
     return this->diff_hours;
 }
 
-double paycheck::getDiffSal() const {
+double payroll::getDiffSal() const {
     return this->diff_sal;
 }
 
-void paycheck::promotePtEmp(const std::string& cf) {
+void payroll::promotePtEmp(const std::string& cf) {
     worker* aux = this->retrieveWorkerFromCf(cf);
     /*if(dynamic_cast<ptemployee*>(aux)){
         worker* new_worker = new ftemployee(*aux);
@@ -260,7 +260,7 @@ void paycheck::promotePtEmp(const std::string& cf) {
     return;
 }
 
-void paycheck::promotePtEmp(worker* w){
+void payroll::promotePtEmp(worker* w){
      /*if(dynamic_cast<ptemployee*>(w)){
         worker* new_worker = new ftemployee(*w);
         pc.substitute(w, new_worker);
@@ -279,7 +279,7 @@ void paycheck::promotePtEmp(worker* w){
     return;
 }
 
-std::string paycheck::findDirCodFisc() const {
+std::string payroll::findDirCodFisc() const {
     for(int count=0; count < pc.getSize(); ++count){
         if(dynamic_cast<director*>(pc[count])){
             return pc[count]->getCodFiscale();
@@ -288,7 +288,7 @@ std::string paycheck::findDirCodFisc() const {
     return "";
 }
 
-double paycheck::getHighestSal() const {
+double payroll::getHighestSal() const {
     double highestSal=0;
     for(int count=0; count < pc.getSize(); ++count){
         if(pc[count]->getLastMonthSalary() > highestSal){
@@ -298,15 +298,15 @@ double paycheck::getHighestSal() const {
     return highestSal;
 }
 
-int paycheck::getTotWorkedHours() const {
+int payroll::getTotWorkedHours() const {
     return this->tot_worked_hours;
 }
 
-void paycheck::updateHighestSal() {
+void payroll::updateHighestSal() {
     this->highest_sal = getHighestSal();
 }
 
-int paycheck::getHighestWorkedHours() const {
+int payroll::getHighestWorkedHours() const {
     int highestWorkedHours=0;
     for(int count=0; count < pc.getSize(); ++count){
         if(pc[count]->getLastMonthWorkedHours() > highestWorkedHours){
@@ -316,11 +316,11 @@ int paycheck::getHighestWorkedHours() const {
     return highestWorkedHours;
 }
 
-void paycheck::updateHighestWorkedHours() {
+void payroll::updateHighestWorkedHours() {
     this->highest_worked_hours = getHighestWorkedHours();
 }
 
-int paycheck::getHighestSeniority() const {
+int payroll::getHighestSeniority() const {
     int highestSeniority=0;
     for(int count=0; count < pc.getSize(); ++count){
         if(pc[count]->getSeniority() > highestSeniority){
@@ -330,18 +330,18 @@ int paycheck::getHighestSeniority() const {
     return highestSeniority;
 }
 
-void paycheck::updateHighestSeniority() {
+void payroll::updateHighestSeniority() {
     this->highest_seniority = getHighestSeniority();
 }
 
 
-void paycheck::resetPaycheckData() {
+void payroll::resetPaycheckData() {
     this->tot_salaries = 0;
     this->tot_bonus_salaries = 0;
     this->tot_worked_hours = 0;
 }
 
-void paycheck::orderByFullSalMax() {
+void payroll::orderByFullSalMax() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -354,7 +354,7 @@ void paycheck::orderByFullSalMax() {
     }
 }
 
-void paycheck::orderByBonusSalMax() {
+void payroll::orderByBonusSalMax() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -367,7 +367,7 @@ void paycheck::orderByBonusSalMax() {
     }
 }
 
-void paycheck::orderByWorkedHoursMax() {
+void payroll::orderByWorkedHoursMax() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -380,7 +380,7 @@ void paycheck::orderByWorkedHoursMax() {
     }
 }
 
-void paycheck::orderBySeniorityMax() {
+void payroll::orderBySeniorityMax() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -393,7 +393,7 @@ void paycheck::orderBySeniorityMax() {
     }
 }
 
-void paycheck::orderByFullSalMin() {
+void payroll::orderByFullSalMin() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -406,7 +406,7 @@ void paycheck::orderByFullSalMin() {
     }
 }
 
-void paycheck::orderByBonusSalMin() {
+void payroll::orderByBonusSalMin() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -419,7 +419,7 @@ void paycheck::orderByBonusSalMin() {
     }
 }
 
-void paycheck::orderByWorkedHoursMin() {
+void payroll::orderByWorkedHoursMin() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -432,7 +432,7 @@ void paycheck::orderByWorkedHoursMin() {
     }
 }
 
-void paycheck::orderBySeniorityMin() {
+void payroll::orderBySeniorityMin() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -445,7 +445,7 @@ void paycheck::orderBySeniorityMin() {
     }
 }
 
-void paycheck::orderByVacDayMax() {
+void payroll::orderByVacDayMax() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -458,7 +458,7 @@ void paycheck::orderByVacDayMax() {
     }
 }
 
-void paycheck::orderByVacDayMin() {
+void payroll::orderByVacDayMin() {
     bool swap_flag=true;
     while(swap_flag){
         swap_flag=false;
@@ -471,7 +471,7 @@ void paycheck::orderByVacDayMin() {
     }
 }
 
-void paycheck::orderByRole() {
+void payroll::orderByRole() {
     Container<worker*> aux;
 
     bool found = true;
@@ -513,7 +513,7 @@ void paycheck::orderByRole() {
     this->pc = aux;
 }
 
-void paycheck::dispAll() const {
+void payroll::dispAll() const {
     std::cout << std::endl;
     std::cout << "METRICHE DELL'ULTIMO MESE" << std::endl << std::endl;
     std::cout << "Totale soldi in uscita per gli stipendi: " << tot_salaries << std::endl;
@@ -538,7 +538,7 @@ void paycheck::dispAll() const {
      }
 }
 
-void paycheck::dispInternalData() const {
+void payroll::dispInternalData() const {
     std::cout << std::endl;
     std::cout << "METRICHE DELL'ULTIMO MESE" << std::endl << std::endl;
     std::cout << "Totale soldi in uscita per gli stipendi: " << tot_salaries << std::endl;

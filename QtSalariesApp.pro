@@ -15,6 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+RC_ICONS = src/payment-day.ico
+
 SOURCES += \
     main.cpp \
     src/model/cpp/contract.cpp \
@@ -24,7 +26,7 @@ SOURCES += \
     src/model/cpp/level1.cpp \
     src/model/cpp/ptemployee.cpp \
     src/model/cpp/worker.cpp \
-    src/paycheck/paycheck.cpp \
+    src/paycheck/payroll.cpp \
     src/view/cpp/qadddialog.cpp \
     src/view/cpp/qdeldialog.cpp \
     src/view/cpp/qemployeeforcalc.cpp \
@@ -46,7 +48,7 @@ HEADERS += \
     src/model/headers/ptemployee.h \
     src/model/headers/worker.h \
     src/model/headers/container.h \
-    src/paycheck/paycheck.h \
+    src/paycheck/payroll.h \
     src/view/headers/qemployeelistforcalc.h \
     src/view/headers/qemployeeforcalc.h \
     src/view/headers/qdeldialog.h \
