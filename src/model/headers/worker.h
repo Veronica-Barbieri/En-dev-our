@@ -19,6 +19,7 @@ private:
 public:
     worker();
     worker(std::string, std::string, std::string);
+    worker(std::string, std::string, std::string, int, int, double, double, double, int, int);
     virtual ~worker();
 
     std::string getName() const;
@@ -47,12 +48,14 @@ public:
 
     int getSeniority() const;
     void updateSeniority();
+    void resetSeniority();
 
     int getVacAcc() const;
     void setVacAcc(const int&);
     void resetVacAcc();
 
     void updateWorkData(const int&, const int&); // aggiorna ore e giorni lavorati in un mese
+    void setWorkData(const int&, const int&, const double&, const double&, const double&, const int&, const int&);
 
     virtual double calcBaseSal() const =0; // calcola lo stipendio base partendo dalle ore lavorate nel mese e dai giorni lavorati nel mese
     virtual double calcBonus() const =0; // calcola il bonus da applicare allo stipendio base

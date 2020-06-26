@@ -1,0 +1,51 @@
+{
+    "diff_hours": 540,
+    "diff_salary": -5120,
+    "employee_list": [
+        {
+            "CF": "GB1",
+            "Name": "Giacomo",
+            "Role": "Direttore",
+            "Surname": "Bulbarelli",
+            "base_salary": 1680,
+            "bonus_salary": 210,
+            "holidays": 2,
+            "seniority": 1,
+            "total_salary": 1890,
+            "worked_days": 180,
+            "worked_hours": 20
+        },
+        {
+            "CF": "AB2",
+            "Name": "Aldo",
+            "Role": "Full-Time",
+            "Surname": "Baglio",
+            "base_salary": 1380,
+            "bonus_salary": 180,
+            "holidays": 2,
+            "seniority": 1,
+            "total_salary": 1560,
+            "worked_days": 180,
+            "worked_hours": 20
+        },
+        {
+            "CF": "GS3",
+            "Name": "Giovanni ",
+            "Role": "Part-Time",
+            "Surname": "Storti",
+            "base_salary": 720,
+            "bonus_salary": 950,
+            "holidays": 1,
+            "seniority": 1,
+            "total_salary": 1670,
+            "worked_days": 180,
+            "worked_hours": 20
+        }
+    ],
+    "highest_salary": 1890,
+    "highest_seniority": 1890,
+    "highest_worked_hours": 180,
+    "tot_bonus_salari": 1340,
+    "tot_salari": 5120,
+    "tot_worked_hours": 540
+}

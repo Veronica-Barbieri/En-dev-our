@@ -6,28 +6,39 @@
 #include "../model/headers/ptemployee.h"
 #include "../model/headers/container.h"
 #include <iostream>
+#include <vector>
+#include <utility>
 
-class paycheck
-{
+class payroll {
 private:
     Container<worker*> pc;
     double tot_salaries;
     double tot_bonus_salaries;
-    int tot_worked_hours;
     double highest_sal;
+    int tot_worked_hours;
     int highest_worked_hours;
     double highest_seniority;
+    double diff_hours;
+    double diff_sal;
 
-    worker* retrieveWorkerFromCf(const std::string&) const;
-    std::string findDirCodFisc() const; // Dir == director
+    std::string findDirCodFisc() const; // Dir == director    cout << n << " " << sn << " " << ccf << " " << con << endl;
 
     bool isPresent(const std::string&) const;
     bool isPresent(worker*) const;
     bool hasDirector() const;
 
 public:
-    paycheck();
-    ~paycheck();
+    payroll();
+    payroll(const Container<worker*>&, const double&, const double&, const double&, const int&, const int&, const double&, const double&, const double&);
+    ~payroll();
+
+    int getSize() const;
+    worker* getWorkerFromIndex(int) const;
+    worker* retrieveWorkerFromCf(const std::string&) const;
+    worker* getWorkerAtPos(const int&) const;
+    Container<worker*> getWorkers() const;
+    void resetPaycheck();
+    void resetLastMonthPaycheck();//reset dati mese
 
     void addEmp(const std::string&, const std::string&, const std::string&, const std::string&);
     void addEmp(worker*);
@@ -36,9 +47,10 @@ public:
     void remEmp(worker*);
 
     void calcAllFullSal();
+    void calcAllFullSal(std::vector<std::pair<int, int>>);
 
-
-
+    double getDiffHours() const;
+    double getDiffSal() const;
 
     void promotePtEmp(const std::string&);
     void promotePtEmp(worker*);
@@ -47,9 +59,12 @@ public:
     void updateTotBonusSalaries(const double&);
     void updateTotWorkedHours(const int&);
 
+    double getTotSal() const;
+    double getTotBuonusSal() const;
     double getHighestSal() const;
-    int getHighestSeniority() const;
+    int getTotWorkedHours() const;
     int getHighestWorkedHours() const;
+    int getHighestSeniority() const;
 
     void updateHighestSal();
     void updateHighestWorkedHours();

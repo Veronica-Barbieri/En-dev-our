@@ -1,16 +1,43 @@
+#include <QApplication>
+
 #include <iostream>
-#include "../headers/director.h"
-#include "../headers/ftemployee.h"
-#include "../headers/ptemployee.h"
-#include "../headers/container.h"
-#include "../../paycheck/paycheck.h"
+#include <QDesktopWidget>
+#include <QIcon>
+#include "src/model/headers/director.h"
+#include "src/model/headers/ftemployee.h"
+#include "src/model/headers/ptemployee.h"
+#include "src/model/headers/container.h"
+#include "src/payroll/payroll.h"
+#include "src/view/headers/qemployee.h"
+#include "src/view/headers/qemployeelist.h"
+#include "src/view/headers/qemployeeinfo.h"
+#include "src/view/headers/qpayrollinfo.h"
+#include "src/view/headers/qsalaries.h"
+#include "src/controller/header/qtsalariescontroller.h"
+#include "src/view/headers/qemployeeforcalc.h"
 
 using std::endl;
 using std::cout;
 using std::cin;
 
-int main()
+int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
+    payroll* model = new payroll();
+    QtSalariesController* controller = new QtSalariesController(model);
+    QSalaries* view = new QSalaries(nullptr, controller);
+    controller->addView(view);
+
+    view->adjustSize();
+    view->move(QApplication::desktop()->screen()->rect().center() - (*view).rect().center());
+    (*view).show();
+
+
+    return a.exec();
+
+/*
+    cout<<"TEST MODEL:"<<endl;
     cout<<"TEST WORKER E CONTRACT:"<<endl;
     cout<<"-----------------------"<<endl<<endl;
 
@@ -18,7 +45,7 @@ int main()
     worker* tony = new ftemployee("Tony", "Cartony", "TC1");
     worker* carla = new ftemployee("Carla", "Tegola", "CT2");
     worker* eolo = new ftemployee("Eolo", "Peolo", "EP9");
-    worker* mona = new ptemployee("Mona", "Poltrona", "GP1");
+    worker* mona = new ptemployee("Gino", "Poltrona", "GP1");
     worker* gianni = new ptemployee("Gianni", "Malanni", "GM4");
 
     gino->calcFullSal(24, 216); // ha alvorato 25 giorni per 9 ore ciascun giorno lavorativo
@@ -172,9 +199,9 @@ int main()
     cout<<endl;
     cout<<endl;
 
-    /*cout<<"cont_sum[3]:  "<<endl;
+    cout<<"cont_sum[3]:  "<<endl;
     cout<<cont_sum[3];
-    cout<<endl;*/
+    cout<<endl;
 
     cont2.swap(2,4);
     cout<<"Container 2 con swap completo: "<<endl;
@@ -224,7 +251,7 @@ int main()
 
     p.dispAll();
 
-    /*
+
 
     cout << "Test metodo isPresent() :" << endl << "1) Risultato atteso: NON PASSATO" << endl;
     if(p.isPresent("FF1")){
@@ -308,5 +335,4 @@ int main()
 
     */
 
-    return 0;
 }

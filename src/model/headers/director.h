@@ -13,6 +13,7 @@ private:
 public:
     director();
     director(std::string, std::string, std::string);
+    director(std::string, std::string, std::string, int, int, double, double, double, int, int);
     director(const worker&);
 
     double getBaseBonusSalary() const;
